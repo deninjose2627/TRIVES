@@ -1,0 +1,282 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management</title>
+    <!-- Link to Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Reset and basic styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 250px;
+            background: #4f5461;
+            color: white;
+            position: fixed;
+            height: 100%;
+            padding-top: 20px;
+            transition: width 0.3s;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s, padding-left 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar a i {
+            margin-right: 10px;
+            transition: margin-right 0.3s;
+        }
+
+        .sidebar.collapsed a i {
+            margin-right: 0;
+        }
+
+        .sidebar.collapsed a span {
+            display: none;
+        }
+
+        /* Main content styling */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            width: calc(100% - 250px);
+            transition: margin-left 0.3s, width 0.3s;
+        }
+
+        .sidebar.collapsed + .main-content {
+            margin-left: 70px;
+            width: calc(100% - 70px);
+        }
+
+        /* Header styling */
+        .header {
+            background-color: #7b7a7a;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease forwards;
+        }
+
+        .header h1 {
+            color: white;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* Button styling */
+        .button {
+            background-color: #6e7b90;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .button:hover {
+            background-color: #0f5bbd;
+            transform: scale(1.05);
+        }
+
+        /* Animation for fade-in effect */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Grid layout for products */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            justify-items: center;
+            align-items: stretch;
+        }
+
+        .product {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .product img {
+            width: 200px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .product .title {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .product .price {
+            font-size: 16px;
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .btn.edit-btn {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .btn.delete-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .btn.edit-btn:hover,
+        .btn.delete-btn:hover {
+            opacity: 0.8;
+        }
+
+        .btn.edit-btn:focus,
+        .btn.delete-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.4);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .main-content {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar section -->
+    <div class="sidebar">
+        <a href="{% url 'admin_dashboard' %}">
+            <i class="fas fa-home"></i><span>Home</span>
+        </a>
+        <a href="{% url 'adminpage' %}">
+            <i class="fas fa-box"></i><span>Product Management</span>
+        </a>
+        <a href="{% url 'adminorders' %}">
+            <i class="fas fa-shopping-cart"></i><span>Order Management</span>
+        </a>
+        <a href="{% url 'stock_management' %}">
+            <i class="fas fa-warehouse"></i><span>Stock Management</span>
+        </a>
+        <a href="{% url 'manage_suppliers' %}">
+            <i class="fas fa-truck"></i><span>Supplier Management</span>
+        </a>
+        <a href="{% url 'user_logout' %}">
+            <i class="fas fa-sign-out-alt"></i><span>Log out</span>
+        </a>
+    </div>
+
+    <!-- Main content section -->
+    <div class="main-content">
+        
+        <!-- Header section -->
+        <div class="header fade-in">
+            <h1>Product Management</h1>
+        </div>
+
+        <!-- Add Product button -->
+        <div class="add-product-btn-container" style="text-align: center; margin-bottom: 20px;">
+            <a href="{% url 'admin_add' %}" class="button">
+                <i class="fas fa-plus" style="font-size: 24px;"></i> Add Product
+            </a>
+        </div>
+
+        <!-- Products grid section -->
+        <div class="grid-container">
+            {% for product in productdata %}
+                <div class="product">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    <div class="title">{{ product.name }}</div>
+                    <div class="price">Rs: {{ product.price }}</div>
+                    <a href="{% url 'edit_product' product.id %}" class="btn edit-btn">Edit</a>
+                    <a href="{% url 'delete_product' product.id %}" class="btn delete-btn">Delete</a>
+                </div>
+            {% empty %}
+                <p style="text-align: center;">No products available.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- jQuery for dynamic behaviors (if needed) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // JavaScript to toggle sidebar
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+        sidebar.addEventListener('mouseenter', () => {
+            sidebar.classList.remove('collapsed');
+            mainContent.classList.remove('collapsed');
+        });
+        sidebar.addEventListener('mouseleave', () => {
+            sidebar.classList.add('collapsed');
+            mainContent.classList.add('collapsed');
+        });
+    </script>
+
+</body>
+</html>

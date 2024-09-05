@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Results</title>
+  <style>
+    /* Center content */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .search-results-container {
+      margin: 0 auto; /* Center align the container */
+      max-width: 1200px; /* Adjust maximum width as needed */
+    }
+
+    .search-results {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .product-item {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      background-color: #fff;
+      cursor: pointer;
+    }
+
+    .product-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .product-details {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .product-details img {
+      width: 100%;
+      height: auto;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    .product-details h3 {
+      margin-top: 15px;
+      margin-bottom: 10px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .product-details p {
+      margin: 5px 0;
+      font-size: 16px;
+      color: #555;
+    }
+
+    .product-details .price {
+      color: #007bff;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .add-to-cart {
+      display: inline-block;
+      margin-top: 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      text-decoration: none;
+    }
+
+    .add-to-cart:hover {
+      background-color: #0056b3;
+    }
+
+    .no-results {
+      text-align: center;
+      margin-top: 200px;
+      margin-bottom: 200px;
+      font-weight: bold;
+      font-size: 24px;
+      color: #e63232;
+    }
+  </style>
+</head>
+<body>
+  <div class="search-results-container">
+    {% if products %}
+      <div class="search-results">
+        <h3 style="text-align: center;padding-top: 200px;font-weight: bold;font-size: 30px;color: #e63232;">Search Results for "{{ query }}"</h3>
+        {% for product in products %}
+          <div class="product-item">
+            <div class="product-details">
+              <a href="/product/{{ product.id }}">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+              </a>
+              <h3>{{ product.name }}</h3>
+              <p>{{ product.cate }}</p>
+              <p class="price">Rs.{{ product.price }}</p>
+              <form action="{% url 'add_to_cart' product.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="add-to-cart">Add to Cart</button>
+              </form>
+              <a href="{% url 'add_to_wishlist' product.id %}" class="add-to-cart">Add to Wishlist</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+
+
+    <div class="no-results" style="margin-top: 200px; margin-bottom: 200px;font-weight: bold;font-size: 30px;">
+      <p style="font-weight: bold;font-size: 30px;color: #e63232;">No products found for "{{ query }}".</p>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
+{% endblock %}

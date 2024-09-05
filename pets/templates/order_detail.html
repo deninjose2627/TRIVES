@@ -1,0 +1,99 @@
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Detail</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin-top: 50px;
+            padding: 30px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        .table {
+            margin-top: 20px;
+        }
+
+        .btn-back {
+            margin-top: 20px;
+        }
+
+        .thead-dark th {
+            background-color: #343a40;
+            color: #fff;
+        }
+
+        .font-weight-bold {
+            font-weight: 700 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center text-success mb-4">Order Detail</h1>
+        {% if request.user.is_superuser %}
+        <p><strong>Order ID:</strong> {{ order.id }}</p>
+        {% endif %}
+        <p><strong>Full Name:</strong> {{ order.fullname }}</p>
+        <p><strong>Address:</strong> {{ order.address }}, {{ order.city }}, {{ order.postal_code }}</p>
+        <p><strong>Total Amount:</strong> ${{ order.total_amount }}</p>
+        <p><strong>Status:</strong> {{ order.get_status_display }}</p>
+        
+        <h2 class="mt-4">Order Items</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ item.product__name }}</td>
+                        <td>{{ item.total_quantity }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr class="font-weight-bold">
+                        <td>Total</td>
+                        <td>{{ total_quantity }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <a href="{% url 'order_list_and_detail' %}" class="btn btn-success btn-back">Back to Orders</a>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+{% endblock %}

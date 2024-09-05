@@ -1,0 +1,162 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Body styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #bccba9;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Container styles */
+        .container {
+            max-width: 500px;
+            margin: 30px auto;
+            background: #c8c2a1;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Heading styles */
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Form styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            width: 90%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #5b4caf;
+            box-shadow: 0 0 5px #4CAF50;
+        }
+
+        .show-password {
+            cursor: pointer;
+            display: inline-block;
+            margin-left: -30px;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .show-password i {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .btn {
+            display: block;
+            width: 120px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none; /* Added for anchor tag styling */
+            text-align: center; /* Center text for anchor tag */
+            margin: 0 auto 10px; /* Centering the button horizontally and adding bottom margin */
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .errorlist {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .success-message {
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Register here!</h1>
+
+        <form method="post" class="form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email address:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email address" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password1">Password:</label>
+                <input type="password" id="password1" name="password1" placeholder="Enter your password" class="form-control" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+                <span class="show-password" onclick="showPassword('password1', 'showIcon1')"><i id="showIcon1" class="fas fa-eye"></i></span>
+            </div>
+
+            <div class="form-group">
+                <label for="password2">Confirm password:</label>
+                <input type="password" id="password2" name="password2" placeholder="Confirm your password" class="form-control" required>
+                <span class="show-password" onclick="showPassword('password2', 'showIcon2')"><i id="showIcon2" class="fas fa-eye"></i></span>
+            </div>
+
+            <button type="submit" class="btn">Register</button>
+        </form>
+
+        {% if form.errors %}
+            <div class="errorlist">
+                <ul>
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{ field }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- JavaScript for toggling password visibility -->
+    <script>
+        function showPassword(fieldId, iconId) {
+            var passwordInput = document.getElementById(fieldId);
+            var showIcon = document.getElementById(iconId);
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                showIcon.classList.remove('fa-eye');
+                showIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                showIcon.classList.remove('fa-eye-slash');
+                showIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
+</body>
+</html>

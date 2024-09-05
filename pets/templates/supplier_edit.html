@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Product Quantity</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #d5c9c9;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+<script>
+function validateForm() {
+    var quantityInput = document.getElementById("id_quantity");
+    var quantity = parseInt(quantityInput.value);
+    if (isNaN(quantity) || quantity <= 0) {
+        alert("Please enter a valid positive quantity.");
+        return false;
+    }
+    return true;
+}
+</script>
+</head>
+<body>
+<div class="container">
+<h2>Edit Product Quantity</h2>
+<form method="post" onsubmit="return validateForm()">
+    {% csrf_token %}
+    <label for="name">Product Name:</label>
+    <p>{{ product.name }}</p>
+
+    <label for="reorder_level">Reorder Level:</label>
+    <p>{{ product.reorderlevel }}</p>
+
+    <label for="price">Price:</label>
+    <p>{{ product.price }}</p>
+
+    <label for="price">Quantity Needed:</label>
+    <p>{{ order.product.quantity }}</p>
+
+    <label for="quantity">New Quantity:</label>
+    {{ form.quantity }}
+
+    <button type="submit">Save</button>
+</form>
+</div>
+</body>
+</html>

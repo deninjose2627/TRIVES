@@ -1,0 +1,429 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard with Map</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-areas: "sidebar content";
+            grid-template-columns: 250px 1fr;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.7;
+        }
+        .sidebar {
+            grid-area: sidebar;
+            background-color: rgba(110, 95, 66, 0.8);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar form {
+            margin-bottom: 15px;
+        }
+        .sidebar button {
+            padding: 10px;
+            background-color: #FFDEAD;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            display: inline-block;
+            width: 100%;
+        }
+        .content {
+            grid-area: content;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .dashboard {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0);
+        }
+        .input-container {
+            margin-bottom: 20px;
+        }
+        .input-container input {
+            padding: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .input-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+        }
+        .weather-data {
+            margin-top: 20px;
+        }
+        canvas {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+        h3.chart-title {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #map {
+            height: 400px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        header {
+            grid-area: header;
+            background: rgba(0, 0, 0, 0.1); /* Semi-transparent background */
+            text-align: center;
+            padding: 20px;
+            font-size: 32px;
+            font-weight: bold;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <video class="video-background" autoplay muted loop>
+        <source src="{% static 'assets/images/vecteezy_sunset-landscape-as-timelapse_23222030.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <form action="{% url 'services' %}" method="get">
+            <button type="submit">
+                Weather Dashboard
+            </button>
+        </form>
+        <form action="{% url 'weather_forecast' %}" method="get">
+            <button type="submit">
+                Weather Forecast
+            </button>
+        </form>
+        <form action="{% url 'weather_dashboard' %}" method="get">
+            <button type="submit">
+                Visualization
+            </button>
+        </form>
+        <form action="{% url 'weather_map' %}" method="get">
+            <button type="submit">
+                WeatherMAP
+            </button>
+        </form>
+        <form action="{% url 'index' %}" method="get">
+            <button type="submit">
+                Exit
+            </button>
+        </form>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="content">
+        <div class="dashboard">
+            <header>
+                Weather Forecast
+            </header>
+            <br>
+            <br>
+            <br>
+            <br>
+
+            <div class="input-container">
+                <input type="text" id="city-input" placeholder="Enter city" value="Idukki">
+                <input type="text" id="country-input" placeholder="Enter country code" value="IN">
+                <button onclick="fetchWeather()">Get Weather</button>
+            </div>
+
+            <h3 class="chart-title">Temperature Over Time (Line Chart)</h3>
+            <canvas id="temperatureChart"></canvas>
+
+            <h3 class="chart-title">Humidity Levels (Bar Chart)</h3>
+            <canvas id="humidityChart"></canvas>
+
+            <h3 class="chart-title">Pressure Data (Stacked Bar Chart)</h3>
+            <canvas id="pressureChart"></canvas>
+
+            <div class="weather-data">
+                <h3>Historical Weather Data</h3>
+                <table id="weather-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Temperature (°C)</th>
+                            <th>Humidity (%)</th>
+                            <th>Pressure (hPa)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="weather-data">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchWeather() {
+            const apiKey = '8ba9fb88bc5d4bb5a067230d3a43b56f';
+            const city = document.getElementById('city-input').value || 'Delhi';
+            const country = document.getElementById('country-input').value || 'IN';
+
+            if (!city || !country) {
+                alert('Please enter a city and country code.');
+                return;
+            }
+
+            const currentWeatherUrl = `https://api.weatherbit.io/v2.0/current?city=${city}&country=${country}&key=${apiKey}`;
+
+            try {
+                const currentResponse = await fetch(currentWeatherUrl);
+                if (!currentResponse.ok) {
+                    throw new Error(`HTTP error! Status: ${currentResponse.status}`);
+                }
+                const currentData = await currentResponse.json();
+                if (currentData.error) {
+                    throw new Error(currentData.error.message);
+                }
+
+                const { lat, lon } = currentData.data[0];
+                const dates = [];
+                const temperatures = [];
+                const humidities = [];
+                const pressures = [];
+
+                // Add current data
+                dates.push(new Date().toLocaleDateString());
+                temperatures.push(currentData.data[0].temp);
+                humidities.push(currentData.data[0].rh);
+                pressures.push(currentData.data[0].pres);
+
+                // Fetch historical data for the past 5 days
+                for (let i = 1; i <= 5; i++) {
+                    const historicalDate = new Date();
+                    historicalDate.setDate(historicalDate.getDate() - i);
+                    const start_date = formatDate(historicalDate);
+
+                    const end_date = new Date(historicalDate);
+                    end_date.setDate(end_date.getDate() + 1); // Set end date to one day after the start date
+                    const formatted_end_date = formatDate(end_date);
+
+                    const historicalWeatherUrl = `https://api.weatherbit.io/v2.0/history/daily?lat=${lat}&lon=${lon}&start_date=${start_date}&end_date=${formatted_end_date}&key=${apiKey}`;
+
+                    try {
+                        console.log(`Fetching historical data for ${start_date}`);
+                        const historicalResponse = await fetch(historicalWeatherUrl);
+                        if (!historicalResponse.ok) {
+                            const errorText = await historicalResponse.text();
+                            console.error(`Error fetching historical data for ${start_date}: ${errorText}`);
+                            throw new Error(`HTTP error! Status: ${historicalResponse.status} - ${errorText}`);
+                        }
+                        const historicalData = await historicalResponse.json();
+                        console.log(`Response for ${start_date}:`, historicalData);
+                        if (historicalData.error) {
+                            throw new Error(historicalData.error.message);
+                        }
+
+                        if (historicalData.data.length > 0) {
+                            dates.push(start_date);
+                            temperatures.push(historicalData.data[0].temp || 'N/A');
+                            humidities.push(historicalData.data[0].rh || 'N/A');
+                            pressures.push(historicalData.data[0].pres || 'N/A');
+                        } else {
+                            dates.push(start_date);
+                            temperatures.push('N/A');
+                            humidities.push('N/A');
+                            pressures.push('N/A');
+                        }
+                    } catch (error) {
+                        console.error(`Error fetching historical data for ${start_date}:`, error.message);
+                        dates.push(start_date);
+                        temperatures.push('N/A');
+                        humidities.push('N/A');
+                        pressures.push('N/A');
+                    }
+                }
+
+                // Visualize data
+                visualizeLineChart('temperatureChart', dates, temperatures, 'Temperature (°C)', 'rgb(255, 99, 132)');
+                visualizeBarChart('humidityChart', dates, humidities, 'Humidity (%)', 'rgb(54, 162, 235)');
+
+                // Create datasets for stacked bar chart
+                const pressureDataset = {
+                    label: 'Pressure (hPa)',
+                    data: pressures,
+                    backgroundColor: 'rgb(75, 192, 192)'
+                };
+
+                visualizeStackedBarChart('pressureChart', dates, [pressureDataset]);
+                populateTable(dates, temperatures, humidities, pressures);
+
+                // Initialize map
+                initializeMap(lat, lon, city);
+
+            } catch (error) {
+                console.error('Error fetching weather data:', error.message);
+            }
+        }
+
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = ('0' + (date.getMonth() + 1)).slice(-2);
+            const day = ('0' + date.getDate()).slice(-2);
+            return `${year}-${month}-${day}`;
+        }
+
+        function visualizeLineChart(canvasId, labels, data, label, borderColor) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        borderColor: borderColor,
+                        fill: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Date'
+                            }
+                        },
+                        y: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: label
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function visualizeBarChart(canvasId, labels, data, label, backgroundColor) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        backgroundColor: backgroundColor,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Date'
+                            }
+                        },
+                        y: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: label
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function visualizeStackedBarChart(canvasId, labels, datasets) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            stacked: true,
+                            title: {
+                                display: true,
+                                text: 'Date'
+                            }
+                        },
+                        y: {
+                            stacked: true,
+                            title: {
+                                display: true,
+                                text: 'Pressure (hPa)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function populateTable(dates, temperatures, humidities, pressures) {
+            const tableBody = document.getElementById('weather-data');
+            tableBody.innerHTML = '';
+            dates.forEach((date, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${date}</td>
+                    <td>${temperatures[index]}</td>
+                    <td>${humidities[index]}</td>
+                    <td>${pressures[index]}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function initializeMap(lat, lon, city) {
+            const map = L.map('map').setView([lat, lon], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            L.marker([lat, lon]).addTo(map)
+                .bindPopup(`Weather data for ${city}`)
+                .openPopup();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast</title>
+    <style>
+        /* Video Background */
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensure the video covers the container */
+            z-index: -1; /* Position it behind other content */
+            overflow: hidden; /* Hide scrollbars */
+        }
+        /* Layout Styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* Hide scrollbars */
+        }
+        #container {
+            display: grid;
+            grid-template-areas: 
+                'header header'
+                'sidebar main-content'
+                'footer footer';
+            grid-template-rows: auto 1fr auto;
+            grid-template-columns: 250px 1fr;
+            height: 100vh;
+            position: relative; /* Make sure the container is positioned relative */
+        }
+        header {
+            grid-area: header;
+            background: rgba(0, 0, 0, 0.1); /* Semi-transparent background */
+            text-align: center;
+            padding: 20px;
+            font-size: 32px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .sidebar {
+            grid-area: sidebar;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar button {
+            padding: 10px;
+            margin: 5px 0;
+            font-size: 16px;
+            background-color: #555;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+        }
+        .sidebar button:hover {
+            background-color: #777;
+        }
+        .main-content {
+            grid-area: main-content;
+            padding: 20px;
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+        .weather-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center content horizontally */
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow for better visibility */
+            width: 100%;
+            max-width: 500px; /* Set a maximum width for better readability */
+        }
+        .input-box,
+        .output-box {
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px; /* Space between input and output boxes */
+            width: 100%;
+        }
+        .input-box input[type="text"],
+        .input-box input[type="date"],
+        .input-box button {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .output-box p {
+            font-weight: bold; /* Make the output data bold */
+        }
+        footer {
+            grid-area: footer;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+    
+    
+    
+    
+</head>
+<body>
+
+    <!-- Video Background -->
+    <video class="video-background" autoplay muted loop>
+        <source src="{% static 'assets/images/vecteezy_sunset-landscape-as-timelapse_23222030.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div id="container">
+        <!-- Header -->
+        <header>
+            Weather Forecast
+        </header>
+        
+                <!-- Sidebar -->
+                <div style="grid-area: sidebar; background-color: #6e5f42; padding: 20px; display: flex; flex-direction: column;">
+                    <form action="{% url 'services' %}" method="get" style="margin-bottom: 15px;">
+                        <button type="submit" style="padding: 10px; background-color: #FFDEAD; border: none; cursor: pointer; font-size: 16px; text-align: center; display: inline-block; width: 100%;">
+                            Weather Dashboard
+                        </button>
+                    </form>
+                    <form action="{% url 'weather_forecast' %}" method="get" style="margin-bottom: 15px;">
+                        <button type="submit" style="padding: 10px; background-color: #FFDEAD; border: none; cursor: pointer; font-size: 16px; text-align: center; display: inline-block; width: 100%;">
+                            Weather Forecast
+                        </button>
+                    </form>
+                    <form action="{% url 'weather_dashboard' %}" method="get" style="margin-bottom: 15px;">
+                        <button type="submit" style="padding: 10px; background-color: #FFDEAD; border: none; cursor: pointer; font-size: 16px; text-align: center; display: inline-block; width: 100%;">
+                            Visualization
+                        </button>
+                    </form>
+                    <form action="{% url 'weather_map' %}" method="get" style="margin-bottom: 15px;">
+                        <button type="submit" style="padding: 10px; background-color: #FFDEAD; border: none; cursor: pointer; font-size: 16px; text-align: center; display: inline-block; width: 100%;">
+                            WeatherMAP
+                        </button>
+                    </form>
+                    <form action="{% url 'index' %}" method="get" style="margin-bottom: 15px;">
+                        <button type="submit" style="padding: 10px; background-color: #FFDEAD; border: none; cursor: pointer; font-size: 16px; text-align: center; display: inline-block; width: 100%;">
+                            Exit
+                        </button>
+                    </form>
+                </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="weather-box">
+                <!-- Input Box -->
+                <div class="input-box">
+                    <form id="weather-form">
+                        <input type="text" id="city" placeholder="Enter city name" required>
+                        <input type="date" id="date" required>
+                        <button type="submit">Get Forecast</button>
+                    </form>
+                </div>
+                <!-- Output Box -->
+                <div class="output-box" id="forecast"></div>
+            </div>
+        </div>
+        
+        
+        
+        <!-- Footer -->
+        <footer>
+            | Footer: About | Contact | Privacy Policy
+        </footer>
+    </div>
+
+    <script>
+        const apiKey = '8ba9fb88bc5d4bb5a067230d3a43b56f'; // Replace with your actual Weatherbit API key
+    
+        document.getElementById('weather-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const city = document.getElementById('city').value;
+            const date = document.getElementById('date').value;
+            const forecastDiv = document.getElementById('forecast');
+            forecastDiv.innerHTML = '';
+    
+            try {
+                // Convert date to the format used by Weatherbit (Unix timestamp)
+                const dateTimestamp = new Date(date).getTime() / 1000;
+                
+                // Weatherbit API endpoint for 14-day forecast
+                const response = await fetch(`https://api.weatherbit.io/v2.0/forecast/daily?city=${encodeURIComponent(city)}&key=${apiKey}`);
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error('Network response was not ok.');
+                }
+                
+                const data = await response.json();
+                if (data && data.data) {
+                    // Find the forecast for the selected date
+                    const weather = data.data.find(day => {
+                        const forecastDate = new Date(day.ts * 1000).toDateString();
+                        return forecastDate === new Date(date).toDateString();
+                    });
+                    
+                    if (weather) {
+                        forecastDiv.innerHTML = `
+                            <p>On ${new Date(weather.ts * 1000).toLocaleDateString()}, the weather in ${city} will be as follows:</p>
+                            <p>The temperature will be ${weather.temp}°C with ${weather.weather.description}. The humidity level is expected to be ${weather.rh}% and the wind speed will be ${weather.wind_spd} m/s.</p>
+                            <p>The UV index will be ${weather.uv}, pressure will be ${weather.pressure} hPa, and visibility will be ${weather.vis} km.</p>
+                        `;
+                        forecastDiv.style.display = 'block'; // Show the forecast section
+                    } else {
+                        forecastDiv.innerHTML = '<p>No weather data available for this date.</p>';
+                        forecastDiv.style.display = 'block'; // Show the forecast section
+                    }
+                } else {
+                    forecastDiv.innerHTML = '<p>No weather data available.</p>';
+                    forecastDiv.style.display = 'block'; // Show the forecast section
+                }
+            } catch (error) {
+                forecastDiv.innerHTML = `<p>Error fetching weather data: ${error.message}</p>`;
+                forecastDiv.style.display = 'block'; // Show the forecast section
+            }
+        });
+    </script>
+    
+</body>
+</html>

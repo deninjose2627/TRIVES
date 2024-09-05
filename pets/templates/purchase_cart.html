@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <!-- CSS styles -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #ddd; 
+        }
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .quantity-container {
+            display: flex;
+            align-items: center;
+        }
+        .quantity-btn {
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            transition: background-color 0.3s;
+            margin-right: 5px; /* Add margin between buttons */
+        }
+        .quantity-btn:hover {
+            background-color: #0056b3;
+        }
+        .quantity-input {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            width: 50px;
+            text-align: center;
+            margin-right: 5px; /* Add margin between input and buttons */
+        }
+        .send-btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .send-btn:hover {
+            background-color: #0056b3;
+        }
+        .empty-cart-message {
+            text-align: center;
+            margin-top: 100px;
+            font-size: 20px;
+            color: #737372;
+        }
+    </style>
+</head>
+<body>
+    <h1>Purchase List</h1>
+    {% if cart_items %}
+    <!-- Display cart items if there are any -->
+    <table>
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, item in cart_items.items %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.name }}</td>
+                <td>
+                    <ul class="quantity-container">
+                        <span><input type="number" class="quantity-input" value="{{ item.quantity }}" min="1"></span>
+                    </ul>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div style="text-align: center;">
+        <button class="send-btn" onclick="sendEmail()">Send</button>
+    </div>
+    {% else %}
+    <!-- Display a message if the cart is empty -->
+    <div class="empty-cart-message">
+        <p>Your shopping cart is empty.</p>
+    </div>
+    {% endif %}
+    
+    <!-- JavaScript validation -->
+    <script>
+        function sendEmail() {
+            // Validation for quantity input
+            var quantityInputs = document.querySelectorAll('.quantity-input');
+            var isValid = true;
+
+            quantityInputs.forEach(function(input) {
+                var quantity = parseInt(input.value);
+                if (isNaN(quantity) || quantity <= 0 || quantity !== parseInt(quantity)) {
+                    isValid = false;
+                    input.style.borderColor = 'red'; // Highlight invalid input
+                }
+            });
+
+            if (isValid) {
+                // Proceed with sending email
+                alert('Email sent successfully.');
+            } else {
+                alert('Please enter a valid positive integer quantity for all items.');
+            }
+        }
+    </script>
+</body>
+</html>

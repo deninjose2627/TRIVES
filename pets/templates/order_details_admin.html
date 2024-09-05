@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Detail</title>
+    <style>
+        .container {
+            width: 80%; /* Adjust container width as needed */
+            margin: 0 auto; /* Center align the container */
+            padding: 20px; /* Add padding for spacing */
+            border: 1px solid #ccc; /* Add border for container */
+            border-radius: 8px; /* Add border radius for container */
+            background-color: #f9f9f9; /* Add background color for container */
+        }
+
+        h1 {
+            text-align: center; /* Center align the heading */
+        }
+
+        p {
+            margin-bottom: 10px; /* Add margin below paragraphs for spacing */
+        }
+
+        table {
+            width: 100%; /* Make table width full inside the container */
+            border-collapse: collapse;
+            margin-top: 20px; /* Add margin above the table for spacing */
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Order Detail</h1>
+        {% if request.user.is_superuser %}
+        <p><strong>Order ID:</strong> {{ order.id }}</p>
+        {% endif %}
+        <p><strong>Full Name:</strong> {{ order.fullname }}</p>
+        <p><strong>Address:</strong> {{ order.address }}, {{ order.city }}, {{ order.postal_code }}</p>
+        <p><strong>Total Amount:</strong> ${{ order.total_amount }}</p>
+        <p><strong>Status:</strong> {{ order.get_status_display }}</p>
+        
+        <h2>Order Items</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

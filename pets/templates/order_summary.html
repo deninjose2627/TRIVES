@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+{% load static %}
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    @page {
+      size: A4;
+      margin: 1cm;
+
+      @frame footer {
+        -pdf-frame-content: footerContent;
+        bottom: 0cm;
+        margin-left: 9cm;
+        margin-right: 9cm;
+        height: 1cm;
+      }
+    }
+
+    body {
+      background: url('https://png.pngtree.com/background/20210716/original/pngtree-cute-pet-party-picture-image_1362789.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+
+    .invoice-box {
+
+      max-width: 800px;
+      margin: auto;
+      padding: 30px;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, .1);
+      background: url('https://png.pngtree.com/thumb_back/fh260/background/20220216/pngtree-pet-dog-plum-blossom-footprints-lovely-background-image_936912.jpg') no-repeat center center fixed;
+      background: rgba(255, 255, 255, 0.9); /* Adding a white background with transparency */
+    }
+
+    .invoice-box h5 {
+      font-size: 22px;
+      color: #4CAF50;
+      text-align: center;
+    }
+
+    .invoice-box table {
+      width: 100%;
+      line-height: inherit;
+      text-align: left;
+    }
+
+    .invoice-box table td {
+      padding: 8px;
+      vertical-align: top;
+    }
+
+    .invoice-box table tr td:nth-child(2) {
+      text-align: right;
+    }
+
+    .invoice-box table tr.top table td {
+      padding-bottom: 20px;
+    }
+
+    .invoice-box table tr.information table td {
+      padding-bottom: 40px;
+    }
+
+    .invoice-box table tr.heading td {
+      background: #eee;
+      border-bottom: 1px solid #ddd;
+      font-weight: bold;
+    }
+
+    .invoice-box table tr.item td {
+      border-bottom: 1px solid #eee;
+    }
+
+    .invoice-box table tr.item.last td {
+      border-bottom: none;
+    }
+
+    .invoice-box table tr.total td:nth-child(2) {
+      border-top: 2px solid #eee;
+      font-weight: bold;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .invoice-box table tr.top table td {
+        width: 100%;
+        display: block;
+        text-align: center;
+      }
+
+      .invoice-box table tr.information table td {
+        width: 100%;
+        display: block;
+        text-align: center;
+      }
+    }
+
+    .rtl {
+      direction: rtl;
+      font-family: Tahoma, 'Comic Sans MS', cursive, sans-serif;
+    }
+
+    .rtl table {
+      text-align: right;
+    }
+
+    .rtl table tr td:nth-child(2) {
+      text-align: left;
+    }
+
+    .total-amount {
+      font-size: 18px;
+      color: #E91E63;
+      text-align: right;
+      margin-top: 20px;
+    }
+
+    .download-button,
+    .continue-button {
+      display: inline-block;
+      padding: 10px 20px;
+      margin-top: 20px;
+      font-size: 16px;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .download-button {
+      background: #4CAF50;
+      color: #fff;
+      border: none;
+    }
+
+    .continue-button {
+      background: #FFC107;
+      color: #fff;
+      border: none;
+    }
+
+    .invoice-title {
+      text-align: center;
+      color: #FF5722;
+    }
+
+    .invoice-logo {
+      display: block;
+      margin: 0 auto 20px;
+      max-width: 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="invoice-box">
+    <img src="{% static 'assets/img/petsindia.jpg' %}" class="invoice-logo" alt="PetsINDIA Logo">
+    <h3 class="invoice-title">Thank You for Your Purchase!</h3>
+    <table cellpadding="0" cellspacing="0">
+      <tr class="top">
+        <td colspan="2">
+          <table>
+            <tr>
+              <td class="title">
+                <h5>PetsINDIA - India's Premium Pet Product Marketplace</h5>
+              </td>
+              <td>
+                Order Date: 20/05/2024<br>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <tr class="information">
+        <td colspan="2">
+          <table>
+            <tr>
+              <td>
+                Customer: {{ fullname }}<br><br>
+                Customer Email: {{ user.email }}
+              </td>
+              <td>
+                Contact Number: 78549657456<br><br>
+                Shipment Address: {{ address }}
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <tr class="information">
+        <td colspan="2">
+          <table>
+            <tr>
+              <td colspan="2">
+                <h3>Product Details</h3>
+                {% for item in cart_products %}
+                <p>{{ item.product }} - Quantity: {{ item.quantity }}</p>
+                {% endfor %}
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <tr class="information">
+        <td colspan="2">
+          <table>
+            <tr>
+              <td>
+                Order Status: Placed<br><br>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <p class="total-amount">Total Amount: Rs.{{ total_amount }}</p>
+    <button class="download-button" onclick="window.print()">Download Invoice</button>
+    <a href="{% url 'index' %}" class="continue-button">Continue Shopping</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Profile</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Add your inline CSS styles here */
+    .form-container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+    }
+    /* Customize other styles as needed */
+  </style>
+   <a href="{% url 'profile_update' %}" style="display: block; text-align: center;font-size: 50px; font-family: Arial, sans-serif; text-decoration: none;">
+    <i class="fas fa-user"></i> {{ user.username }}
+</a>
+
+
+</head>
+<body>
+  <div class="container">
+    <div class="form-container">
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="id_username">Username</label>
+          {{ form.username }}
+        </div>
+        <div class="form-group">
+          <label for="id_first_name">First Name</label>
+          {{ form.first_name }}
+        </div>
+        <!-- Add other form fields as needed -->
+
+        <h3>Change Password</h3>
+        <div class="form-group">
+          <label for="id_old_password">Old Password</label>
+          {{ password_form.old_password }}
+        </div>
+        <div class="form-group">
+          <label for="id_new_password1">New Password</label>
+          {{ password_form.new_password1 }}
+        </div>
+        <div class="form-group">
+          <label for="id_new_password2">Confirm New Password</label>
+          {{ password_form.new_password2 }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Profile</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and dependencies (if needed) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

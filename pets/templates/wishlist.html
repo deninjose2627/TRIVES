@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Wishlist</title>
+    <style>
+        /* CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .main-heading {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 2em;
+            color: #737372;
+            text-align: center;
+            letter-spacing: 3px;
+            margin-top: 20px;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .products-section {
+            background-color: #e9c3aa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px; /* Adjust as needed */
+            margin: 0 auto;
+        }
+
+        .product-item {
+            margin-bottom: 20px;
+        }
+
+        .product {
+            text-align: center;
+            border: 2px solid #ccc;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-img img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+
+        /* .product-details {
+            font-size: 18px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .product-details {
+            font-size: 14px;
+            margin: 10px 0;
+            color: #444;
+        } */
+
+        .product-details {
+            font-size: 16px;
+            color: #111212;
+            margin-top: 5px;
+            align-items: left;
+            font-weight: bold;
+        }
+
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+            
+        }
+
+        .add-to-cart,
+        .remove-from-wishlist {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .add-to-cart:hover,
+        .remove-from-wishlist:hover {
+            background-color: #0056b3;
+        }
+
+        .empty-space {
+            text-align: center;
+            margin-top: 100px;
+            font-size: 25px;
+            color: #737372;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="main-heading">WISHLIST</h1>
+
+    <section class="gap products-section">
+        <div class="container">
+            <div class="row">
+                {% if data %}
+                    {% for product in data %}
+                        <div class="col-md-3 col-sm-6 product-item">
+                            <div class="product">
+                                <div class="product-img">
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                </div>
+                                <div class="product-details" style="text-align: left;">
+                                    <a class="title" href="/product/{{ product.id }}">{{ product.name }}</a>
+                                    <p class="description">Category: {{ product.category }}</p>
+                                    <p class="price">Price: {{ product.price }}</p>
+                                </div>
+                                
+                                <div class="product-actions">
+
+                                    <div class="buttons">
+                                        <form action="{% url 'add_to_cart' product.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="add-to-cart">Add to Cart</button>
+                                        </form>
+                                        <form action="{% url 'remove_to_wishlist' product.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="remove-from-wishlist">Remove from Wishlist</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-space">
+                        Your wishlist is empty.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</body>
+</html>
+
+{% endblock %}

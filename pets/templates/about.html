@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="banner" style="position: relative; overflow: hidden; height: 600px; background-image:url('https://static.vecteezy.com/system/resources/thumbnails/018/991/999/original/water-drops-in-stormy-weather-motion-seamless-4k-ultra-hd-animated-circle-abstract-background-free-video.jpg')">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="banner-text">
+                    <h2>ABOUT US</h2>
+                    <p>Your trusted partner in providing quality farming tools and weather forecasts for better agricultural decisions.</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="banner-img">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="gap about" style="background-color: #e8f5e9;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="heading two">
+                    <h2>Welcome to Harvest Horizons</h2>
+                </div>
+                <div class="content">
+                    <p>We are dedicated to providing high-quality farming tools and real-time weather forecasts to enhance agricultural productivity and ensure the safety and well-being of farmers. Our mission is to empower farmers with the tools and information they need to succeed.</p>
+                    <ul class="list" style="list-style: none; padding: 0; margin: 0;">
+                        <li style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <img src="{% static 'assets/images/CHECK.png' %}" alt="check" style="width: 60px; height: 60px; margin-right: 10px;">
+                            Wide range of farming tools for all agricultural needs.
+                        </li>
+                        <li style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <img src="{% static 'assets/images/CHECK.png' %}" alt="check" style="width: 60px; height: 60px; margin-right: 10px;">
+                            Accurate weather forecasting to assist in planning and decision-making.
+                        </li>
+                        <li style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <img src="{% static 'assets/images/CHECK.png' %}" alt="check" style="width: 60px; height: 60px; margin-right: 10px;">
+                            Expert advice and customer support available 24/7.
+                        </li>
+                        <li style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <img src="{% static 'assets/images/CHECK.png' %}" alt="check" style="width: 60px; height: 60px; margin-right: 10px;">
+                            Secure and easy online shopping experience.
+                        </li>
+                    </ul>
+                    
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="image">
+                    <img src="{% static 'assets/images/ABOUT.png' %}" alt="Farming">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="banne" style="background-color: #c5d9f1; background-image:url('Dhttps://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtqpFDuX9UzZLV2QkRL5e0TbkUkwv2dJPtwA&s')">
+    <div class="container">
+        <div class="heading">
+            <br></br>
+            <h3>Our Services</h3>
+            <h2>What We Offer</h2>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="service-item"style="text-align: center;">
+                    <i><img src="{% static 'assets/images/61Cm-Uh6FPL.jpg' %}" alt="icon"></i>
+                    <h4>Quality Farming Tools</h4>
+                    <p>We provide a wide selection of tools for all farming activities, ensuring you have the right equipment for every task.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="service-item"style="text-align: center;">
+                    <i><img src="{% static 'assets/images/REAL.jpg' %}" alt="icon"></i>
+                    <h4>Real-Time Weather Forecasting</h4>
+                    <p>Access up-to-date weather forecasts tailored to your location to make informed farming decisions.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="service-item" style="text-align: center;"> <!-- Center-aligns all content within the service-item -->
+                    <i>
+                        <img src="{% static 'assets/images/images (1).png' %}" alt="icon" style="display: block; margin: 0 auto;"> <!-- Centers the image -->
+                    </i>
+                    <br> <!-- Adjust line break -->
+                    <h4>24/7 Customer Support</h4>
+                    <p>Our team of experts is always available to provide guidance and support for all your farming needs.</p>
+                </div>
+            </div>
+            
+        </div>
+        <br></br>
+    </div>
+</section>
+
+{% endblock %}

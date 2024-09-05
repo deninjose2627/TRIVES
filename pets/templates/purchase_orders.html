@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Order Bill</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f0f0f0 0%, #ffffff 100%);
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1000px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #bcbbe0;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f7f7f7;
+        }
+
+        tr:hover {
+            background-color: #efefef;
+        }
+
+        .total {
+            font-weight: bold;
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .button {
+            padding: 15px 30px;
+            text-align: center;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .back-button {
+            background-color: #FF6B6B;
+        }
+
+        .download-button {
+            background-color: #6C63FF;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .download-button[disabled] {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+
+            .button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'stock_management' %}" class="button back-button">Back</a>
+        <h1>Purchase Order Bill</h1>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Order Date</th>
+                    <th>Supplier Name</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Quantity Needed</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in purchase_orders %}
+                <tr>
+                    <td>{{ order.product.id }}</td>
+                    <td>{{ order.order_date }}</td>
+                    <td>{{ order.supplier.username }}</td>
+                    <td>{{ order.product.name }}</td>
+                    <td>₹{{ order.product.price }}</td>
+                    <td>{{ order.quantity }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p class="total">Total Orders: {{ purchase_orders|length }}</p>
+        <p class="total">Total Order Value: ₹{{ total_order_value }}</p>
+        <div class="button-container">
+            {% if purchase_orders %}
+            <button class="button download-button" onclick="window.print()">Download Invoice</button>
+            {% else %}
+            <button class="button download-button" disabled>Download Invoice</button>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

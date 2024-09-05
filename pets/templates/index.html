@@ -1,0 +1,315 @@
+{%extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="banner" style="position: relative; overflow: hidden; height: 900px;background-image:url('https://static.vecteezy.com/system/resources/previews/021/774/641/non_2x/blank-green-nature-landscape-scene-vector.jpg')">
+    <div class="container">
+        <div class="row hero-one-slider owl-carousel owl-theme">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-5">
+                        <div class="hero-text">
+                            <h1>Take a time to view our products</h1>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="hero-img">
+                            <img src="{% static 'assets/images/front.avif' %}" alt="img">
+<br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> 
+
+<section class="gap no-bottom" style="background-color: rgb(233, 215, 191);">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="welcome-to">
+                    <h2>Welcome to Harvest Horizons </h2>
+                    <p>It is important to know that the pain is important, and the coaching elit will be successful.</p>
+                    <div class="row mt-lg-5">
+                        <div class="col-md-6">
+                            <div class="pet-grooming">
+                            <i><img src="{% static 'assets/images/icon2.png' %}" alt="icon"></i>
+                            <svg width="138" height="138" viewBox="0 0 673 673" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.82698 416.603C-19.0352 298.701 18.5108 173.372 107.497 90.7633L110.607 96.5197C24.3117 177.199 -12.311 298.935 15.0502 413.781L9.82698 416.603ZM89.893 565.433C172.674 654.828 298.511 692.463 416.766 663.224L414.077 658.245C298.613 686.363 175.954 649.666 94.9055 562.725L89.893 565.433ZM656.842 259.141C685.039 374.21 648.825 496.492 562.625 577.656L565.413 582.817C654.501 499.935 691.9 374.187 662.536 256.065L656.842 259.141ZM581.945 107.518C499.236 18.8371 373.997 -18.4724 256.228 10.5134L259.436 16.4515C373.888 -10.991 495.248 25.1518 576.04 110.708L581.945 107.518Z" fill="#940c69"/>
+                            </svg>
+                            <a href="index.html#"><h4>Crop Seeds</h4></a>
+                            <p>High-quality crop seeds are essential for a thriving farm, as they lay the groundwork for strong, healthy plants and significantly boost the potential for a rich and abundant harvest.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="pet-grooming mb-0">
+                            <i><img src="{% static 'assets/img/welcome-to-2.png' %}" alt="icon"></i>
+                            <svg width="138" height="138" viewBox="0 0 673 673" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.82698 416.603C-19.0352 298.701 18.5108 173.372 107.497 90.7633L110.607 96.5197C24.3117 177.199 -12.311 298.935 15.0502 413.781L9.82698 416.603ZM89.893 565.433C172.674 654.828 298.511 692.463 416.766 663.224L414.077 658.245C298.613 686.363 175.954 649.666 94.9055 562.725L89.893 565.433ZM656.842 259.141C685.039 374.21 648.825 496.492 562.625 577.656L565.413 582.817C654.501 499.935 691.9 374.187 662.536 256.065L656.842 259.141ZM581.945 107.518C499.236 18.8371 373.997 -18.4724 256.228 10.5134L259.436 16.4515C373.888 -10.991 495.248 25.1518 576.04 110.708L581.945 107.518Z" fill="#940c69"/>
+                            </svg>
+                            <a href="index.html#"><h4>Weather Updates</h4></a>
+                            <p> Weather updates are important for planning your day. They help you know what to expect, like if it will be sunny or rainy. Checking the weather regularly helps you stay prepared and safe, making sure you can plan your activities better.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="dog-walker two d-block">
+                    <img src="{% static 'assets/images/front image.jpg' %}" class="w-100" alt="dog walker">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section> 
+
+
+
+<style>
+    /* Wrapper for the input with a glass effect */
+    .input-container {
+        position: relative; /* Position relative for icon placement */
+        width: 100%; /* Full width for container */
+        margin: 30px 0; /* Margin for spacing */
+    }
+
+    /* Custom input styling with glassmorphism effect */
+    .glass-input {
+        width: 100%; /* Full width input */
+        padding: 15px 20px; /* Padding inside the input */
+        font-size: 18px; /* Larger font size for better readability */
+        color: #fff; /* White text color */
+        background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+        border: 1px solid rgba(255, 255, 255, 0.2); /* Light border for glass effect */
+        border-radius: 15px; /* Rounded corners for a modern look */
+        backdrop-filter: blur(10px); /* Frosted glass effect */
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Soft shadow for depth */
+        transition: all 0.3s ease; /* Smooth transition for hover and focus */
+    }
+
+    /* Hover and focus styles for input */
+    .glass-input:focus, .glass-input:hover {
+        border-color: rgba(255, 255, 255, 0.5); /* Brighten border on focus */
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.5); /* Stronger shadow on focus */
+        outline: none; /* Remove default outline */
+    }
+
+    /* Placeholder text styling */
+    .glass-input::placeholder {
+        color: rgba(255, 255, 255, 0.7); /* White placeholder text with reduced opacity */
+        font-style: italic; /* Italic style for placeholder */
+    }
+
+    /* Icon inside input styling */
+    .input-icon {
+        position: absolute; /* Absolute positioning for placement */
+        top: 50%; /* Center vertically */
+        left: 15px; /* Spacing from left */
+        transform: translateY(-50%); /* Adjust to center vertically */
+        color: #fff; /* Icon color */
+        font-size: 22px; /* Icon size */
+        opacity: 0.8; /* Slight transparency for the icon */
+        pointer-events: none; /* Prevent icon from interfering with input focus */
+    }
+</style>
+
+
+
+<section class="gap section-healthy-product" style="background-image: url('assets/img/healthy-product.png'); background-color: #f5f5f5;">
+    <div class="container">
+        <div class="heading">
+            <!-- <img src="{% static 'assets/images/icon4.png' %}" alt="heading-img"> -->
+            <h2>Find Your Crop Seeds</h2>
+            <h4>Top selling products for this season</h4>
+        </div>
+        <div class="row">
+            {% for product in productdata|dictsort:"id"|dictsortreversed:"is_active" %}
+                {% if product.is_active %}
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="healthy-product">
+                    <div class="healthy-product-img">
+                        <a href="/product/{{product.id}}">
+                            <img src="{{ product.image.url }}" alt="food" style="height: 200px; width: 100%;">
+                        <ul class="star">
+                            <li><i class="fa-solid fa-star"></i></li>
+                            <li><i class="fa-solid fa-star"></i></li>
+                            <li><i class="fa-solid fa-star"></i></li>
+                            <li><i class="fa-solid fa-star"></i></li>
+                            <li><i class="fa-solid fa-star"></i></li>
+                        </ul>
+                        <div class="add-to-cart" style="display: flex; justify-content: space-between; align-items: center;">
+                            <form action="{% url 'add_to_cart' product.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">Add to cart</button>
+                            </form>
+                            <a href="{% url 'add_to_wishlist' product.id %}" class="heart-wishlist">
+                                <i class="fa-regular fa-heart"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <span>{{ product.catogary }}</span>
+                    <a href="/product/{{product.id}}">{{ product.name }}</a>
+                    <h6>₹{{ product.price }}</h6>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            <div class="col-lg-9">
+                {% if most_ordered_product %}
+                <div class="deal-of-the-week">
+                    <div class="healthy-product-img" style="background-color: rgb(133, 128, 100);">
+                        <h6>Deal of the Week</h6>
+                        <a href="/product/{{most_ordered_product.id}}">
+                            <img src="{{ most_ordered_product_image }}" style="height: 200px; width: 100%;">
+                        
+                        <ul class="star">
+                            <li><i class="fa-solid fa-star"></i></li>
+                            <li><i class="fa-solid fa-star"></i></li>
+                            <li><i class="fa-solid fa-star"></i></li>
+                            <li><i class="fa-solid fa-star"></i></li>
+                            <li><i class="fa-solid fa-star"></i></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="healthy-product">
+                        
+                        <span>{{ most_ordered_product_category }}</span>
+                        <a href="/product/{{most_ordered_product.id}}">{{ most_ordered_product.name }}</a>
+                        <h6><del>₹70.00</del>₹{{ most_ordered_product_price }}</h6>
+                        <h5>up to 14% off</h5>
+                        <div class="add-to-cart" style="display: flex; justify-content: space-between; align-items: center;">
+                            <form action="{% url 'add_to_cart' most_ordered_product.id %}" method="post">
+            
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">Add to cart</button>
+                            </form>
+                            <a href="{% url 'add_to_wishlist' most_ordered_product.id %}" class="heart-wishlist">
+                                <i class="fa-regular fa-heart"></i>
+                            </a>
+                        </div>
+                        <div id="countdown">
+                            <ul>
+                              <li><span id="days"></span>days</li>
+                              <li><span id="hours"></span>Hour</li>
+                              <li><span id="minutes"></span>Min</li>
+                              <li class="mb-0"><span id="seconds"></span>Sec</li>
+                            </ul>
+                           </div>
+                          
+                    </div>
+                    
+            
+                </div>
+                {% endif %} 
+            </div>
+            
+            
+
+        </div>
+    </div>
+</section> 
+
+<section>
+    <div class="container text-center">
+        <div class="heading">
+            <img src="{% static 'assets/images/images.png' %}" alt="heading-img" class="mb-3">
+            <h6>Stay Ahead with Accurate</h6>
+            <h2>Weather Forecasting</h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="weather-feature text-center">
+                    <img src="{% static 'assets/images/WEATHE2.png' %}" alt="feature" class="img-fluid mb-3">
+                    <h4>Daily Forecasts</h4>
+                    <p>Get precise daily weather forecasts to plan your day effectively. Stay informed about temperature, humidity, wind speed, and more.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="weather-feature text-center">
+                    <img src="{% static 'assets/images/weather-2.webp' %}" alt="feature" class="img-fluid mb-3">
+                    <h4>Severe Weather Alerts</h4>
+                    <p>Receive real-time alerts on severe weather conditions to stay safe and prepared for any unexpected changes.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="weather-feature text-center">
+                    <img src="{% static 'assets/images/redar26.jpg' %}" alt="feature" class="img-fluid mb-3">
+                    <h4>Interactive Radar</h4>
+                    <p>Track weather patterns with our interactive radar. View real-time precipitation, storm tracks, and more to make informed decisions.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container mt-5">
+            <h2 class="mb-4">Check Weather</h2>
+            <form method="POST" action="{% url 'weather_view' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="location">Enter Query:</label><br>
+                    <div class="input-container">
+                        <i class="fas fa-map-marker-alt input-icon"></i> <!-- FontAwesome icon for location -->
+                        <input type="text" class="form-control glass-input" id="location" name="location" placeholder="e.g., Will it rain in ___ today?" required>
+                    </div>
+                    </div>
+                <br><br><br>
+                <button type="submit" class="btn btn-primary">Get Weather</button>
+            </form>
+    
+            <!-- Display error message if available -->
+            {% if error %}
+            <div class="alert alert-danger mt-4">{{ error }}</div>
+            {% endif %}
+    
+            <!-- Output Container -->
+            {% if weather_data or gemini_response %}
+            <div class="mt-4">
+                <!-- Weather Information -->
+                {% if weather_data %}
+                <div class="weather-info bg-light p-4 rounded border">
+                    <h2>Weather in {{ weather_data.location }}</h2>
+                    <p><strong>Temperature:</strong> {{ weather_data.temperature }}°C</p>
+                    <p><strong>Description:</strong> {{ weather_data.description }}</p>
+                    <p><strong>Humidity:</strong> {{ weather_data.humidity }}%</p>
+                    <p><strong>Pressure:</strong> {{ weather_data.pressure }} hPa</p>
+                </div>
+                {% endif %}
+    
+                <!-- Gemini Explanation -->
+                {% if gemini_response %}
+                <div class="gemini-response bg-light p-4 rounded border mt-4">
+                    <p>{{ gemini_response }}</p>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    
+        <!-- Include Bootstrap JS and dependencies -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        {% if user.is_authenticated %}
+        <div class="mt-4">
+            <a href="{% url 'services' %}" class="btn btn-primary">Explore Weather Dashboard...</a>
+        </div>
+    {% else %}
+    <div class="mt-4 text-center">
+        <div class="alert alert-info d-inline-block p-3 rounded shadow" style="background-color: #e6f7ff; border: 1px solid #b3e0ff;">
+            <p class="mb-0 text-dark" style="font-size: 1.2rem;">
+                <i class="fa fa-lock" aria-hidden="true" style="margin-right: 8px; color: #007bff;"></i>
+                Please <a href="{% url 'combined_login' %}" class="font-weight-bold" style="color: #007bff; text-decoration: underline;">log in</a> to access the weather dashboard.
+            </p>
+        </div>
+    </div>
+    
+    {% endif %}
+        <br>
+    </div>
+</section>
+
+
+
+{% endblock %}
+                       

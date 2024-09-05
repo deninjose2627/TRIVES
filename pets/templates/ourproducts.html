@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<body>
+    <style>
+        /* Standard form style */
+        .form-field {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-container {
+            max-width: 300px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .form-input::-ms-expand {
+            display: none;
+        }
+
+        .form-input option[disabled]:first-child {
+            color: #999;
+        }
+
+        .form-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .form-button:hover {
+            background-color: #0056b3;
+        }
+
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .banner-text h2 {
+            color: white;
+        }
+
+        .sidebar {
+            width: 300px;
+            position: absolute; /* Changed from relative to absolute */
+            top: 0;
+            left: 0;
+            height: 100%; /* Adjusted height */
+            background-color: #f9f9f9;
+            border-right: 1px solid #ccc;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .main-content {
+            margin-left: 320px; /* Adjusted to align right next to sidebar */
+            padding: 20px;
+            position: relative; /* Make sure this is relative to allow adjustment */
+        }
+
+        .banner-section {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+
+    <section class="banner" style="position: relative; overflow: hidden; height: 800px;">
+        <video class="video-background" autoplay loop muted>
+            <source src="{% static 'assets/images/vecteezy_hands-watering-young-plants-growing-in-germination-on_4651777.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="container banner-section" style="position: relative; z-index: 1;">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="banner-text">
+                        <h2>Our Products</h2>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="banner-img">
+                        <div class="banner-img-1">
+                            <img src="{% static 'assets/images/img2.jpg' %}" alt="banner">
+                        </div>
+                        <div class="banner-img-2">
+                            <img src="{% static 'assets/images/farm12.jpeg' %}" alt="banner">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="gap products-section" style="background-color: #e2e7e1; position: relative; padding-top: 10px;"> <!-- Removed padding to align to top -->
+        <div class="sidebar">
+            <div class="form-container">
+                <form id="category-form" method="GET" action="{% url 'ourproducts' %}">
+                    <div class="form-field">
+                        <label for="category" class="form-label"><a href="{% url 'ourproducts' %}"><i> Filter using Category:</i></a></label>
+                        <select id="category" name="category" required class="form-input" onchange="submitForm()">
+                            <option value="" selected><a href="{% url 'ourproducts' %}"><i></i>All Products</i></a></option>
+                            <option value="Wet Pet Food">Wet Pet Food</option>
+                            <option value="Commercial Raw Pet Food">Commercial Raw Pet Food</option>
+                            <option value="Dry Pet Food">Dry Pet Food</option>
+                            <option value="Toys">Toys</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="row">
+                {% for product in productdata|dictsort:"id"|dictsortreversed:"is_active" %}
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <div class="healthy-product" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div class="healthy-product-img">
+                                <a href="/product/{{product.id}}">
+                                    <img src="{{ product.image.url }}" alt="food" style="height: 200px; width: 100%;">
+                                </a> 
+                                <div class="add-to-cart" style="display: flex; justify-content: space-between; align-items: center;">
+                                    <form action="{% url 'add_to_cart' product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary">Add to cart</button>
+                                    </form>
+                                    <a href="{% url 'add_to_wishlist' product.id %}" class="heart-wishlist">
+                                        <i class="fa-regular fa-heart"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div style="text-align: center;">
+                                <span>{{ product.catogary }}</span>
+                                <a href="/product/{{product.id}}">{{ product.name }}</a>
+                                <h6>₹{{ product.price }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function submitForm() {
+            document.getElementById("category-form").submit();
+        }
+    </script>
+</body>
+{% endblock %}

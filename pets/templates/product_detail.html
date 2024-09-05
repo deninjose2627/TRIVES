@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Product Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+        }
+
+        .banner {
+            position: relative;
+            overflow: hidden;
+            height: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgb(173, 37, 37);
+        }
+
+        .banner .banner-section {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.1); /* Dark overlay */
+            color: white; /* Set text color to white */
+        }
+
+        .banner h2 {
+            font-size: 50px;
+            margin: 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: bold;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 40px;
+            background-color: #e0decd;
+        }
+
+        .product-card {
+            display: flex;
+            max-width: 900px;
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            background-color: #ffffff;
+            margin: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+            border-color: #ebb0a1;
+        }
+
+        .product-image {
+            width: 40%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: auto;
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+            transition: transform 0.3s ease-in-out;
+            object-fit: cover;
+        }
+
+        .product-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .product-details {
+            padding: 20px;
+            text-align: left;
+            width: 60%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .product-details .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+            text-transform: uppercase;
+        }
+
+        .product-details .description {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .product-details .category,
+        .product-details .weather_condition {
+            font-size: 17px;
+            color: #e56e6e;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .product-details .price {
+            font-size: 22px;
+            color: #ff7e5f;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .action-buttons a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px 20px;
+            background-color: #007bff;
+            border-radius: 25px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .action-buttons a:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .product-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .product-card {
+                max-width: 90%;
+                margin: 20px 0;
+            }
+
+            .banner h2 {
+                font-size: 36px;
+            }
+
+            .product-image, .product-details {
+                width: 100%;
+            }
+
+            .product-image img {
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Banner Section with Video Background -->
+    <section class="banner">
+        <video class="video-background" autoplay loop muted style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+            <source src="{% static 'assets/images/vecteezy_hands-watering-young-plants-growing-in-germination-on_4651777.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="container banner-section">
+            <h2>Products Details</h2>
+        </div>
+    </section>
+
+    <!-- Product Display Section -->
+    <div class="product-container">
+        <!-- Display product -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            </div>
+            <div class="product-details">
+                <div class="title">{{ product.name }}</div>
+                <div class="description">{{ product.description }}</div>
+                <div class="category">Category: {{ product.category }}</div>
+                <div class="weather_condition">Preferred Season: {{ product.weather_condition }}</div>
+                <div class="price">Rs: {{ product.price }}/Pack</div>
+                <div class="action-buttons">
+                    <a href="{% url 'add_to_cart' product.id %}">Add to Cart</a>
+                    <a href="{% url 'add_to_wishlist' product.id %}">Add to Wishlist</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

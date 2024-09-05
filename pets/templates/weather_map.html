@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapbox Weather Map with Sidebar</title>
+
+    <!-- Mapbox CSS -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        #sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #f4f4f4;
+            padding: 15px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            position: relative;
+        }
+        #map {
+            flex-grow: 1;
+            height: 100vh;
+            position: relative;
+        }
+        .mapboxgl-popup {
+            max-width: 200px;
+        }
+        .marker {
+            background-size: cover;
+            width: 50px;
+            height: 50px;
+        }
+        .search-box {
+            margin-bottom: 15px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .city-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .city-list li {
+            margin-bottom: 10px;
+        }
+        .city-list button {
+            background: none;
+            border: none;
+            color: #007bff;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: left;
+            padding: 0;
+            width: 100%;
+        }
+        .city-list button:hover {
+            text-decoration: underline;
+        }
+        .back-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="sidebar">
+        <a href="{% url 'services' %}" style="margin-bottom: 15px; padding: 10px; background-color: #FFDEAD; border: none; cursor: pointer; font-size: 16px; text-decoration: none; display: inline-block;">
+            Back to Dashboard
+        </a>
+                <h2>Weather Info</h2>
+        <div class="search-box">
+            <input type="text" id="search" placeholder="Search city...">
+        </div>
+        <h3>Cities in Kerala</h3>
+        <ul class="city-list">
+            <li><button onclick="setCity(9.9392, 76.2599)">Kochi</button></li>
+            <li><button onclick="setCity(11.2588, 75.7804)">Kozhikode</button></li>
+            <li><button onclick="setCity(10.5276, 76.2134)">Thrissur</button></li>
+            <li><button onclick="setCity(9.5934, 76.5234)">Kottayam</button></li>
+            <li><button onclick="setCity(9.2653, 76.7821)">Pathanamthitta</button></li>
+            <li><button onclick="setCity(9.4983, 76.3264)">Alappuzha</button></li>
+            <li><button onclick="setCity(10.7954, 76.6525)">Palakkad</button></li>
+            <li><button onclick="setCity(9.2333, 76.5500)">Mavelikkara</button></li>
+            <li><button onclick="setCity(8.1754, 77.4344)">Nagercoil</button></li>
+            <li><button onclick="setCity(10.7905, 78.7047)">Tiruchirappalli</button></li>
+            <li><button onclick="setCity(11.0168, 76.9558)">Coimbatore</button></li>
+            <li><button onclick="setCity(12.9184, 79.1325)">Vellore</button></li>
+            <li><button onclick="setCity(9.7833, 77.0667)">Kattappana</button></li>
+            <li><button onclick="setCity(9.4422, 76.5474)">Changanassery</button></li>
+            <li><button onclick="setCity(9.8500, 76.9667)">Idukki</button></li>
+            <li><button onclick="setCity(11.6667, 76.0667)">Wayanad</button></li>
+            <li><button onclick="setCity(10.8167, 76.2833)">Pattambi</button></li>
+            <li><button onclick="setCity(9.5333, 76.7667)">Kanjirappally</button></li>
+            <li><button onclick="setCity(10.0883, 77.0594)">Munnar</button></li>
+            <li><button onclick="setCity(8.8933, 76.6144)">Kollam</button></li>
+            <li><button onclick="setCity(8.0783, 77.5381)">Kanyakumari</button></li>
+            <li><button onclick="setCity(9.0167, 76.9333)">Punalur</button></li>
+            <li><button onclick="setCity(10.1333, 76.4833)">Perumbavoor</button></li>
+            <li><button onclick="setCity(9.7167, 76.6833)">Palai</button></li>
+            <li><button onclick="setCity(9.4833, 76.4333)">Kuttanadu</button></li>
+            <li><button onclick="setCity(10.5667, 76.6333)">Muthalamada</button></li>
+        </ul>
+    
+        <h3>Other Cities</h3>
+        <ul class="city-list">
+            <li><button onclick="setCity(28.7041, 77.1025)">Delhi</button></li>
+            <li><button onclick="setCity(19.0759, 72.8777)">Mumbai</button></li>
+            <li><button onclick="setCity(13.0827, 80.2707)">Chennai</button></li>
+            <li><button onclick="setCity(12.9716, 77.5946)">Bangalore</button></li>
+            <li><button onclick="setCity(22.5726, 88.3639)">Kolkata</button></li>
+            <li><button onclick="setCity(23.0225, 72.5714)">Ahmedabad</button></li>
+            <li><button onclick="setCity(30.7333, 76.7794)">Chandigarh</button></li>
+            <li><button onclick="setCity(26.8467, 80.9462)">Lucknow</button></li>
+            <li><button onclick="setCity(17.3850, 78.4867)">Hyderabad</button></li>
+            <li><button onclick="setCity(21.1702, 72.8311)">Surat</button></li>
+            <li><button onclick="setCity(15.3173, 75.7139)">Hubli</button></li>
+            <li><button onclick="setCity(20.2961, 85.8245)">Bhubaneswar</button></li>
+            <li><button onclick="setCity(28.4595, 77.0266)">Gurgaon</button></li>
+            <li><button onclick="setCity(19.0368, 73.0154)">Navi Mumbai</button></li>
+            <li><button onclick="setCity(21.1458, 79.0882)">Nagpur</button></li>
+            <li><button onclick="setCity(24.8084, 93.9384)">Imphal</button></li>
+            <li><button onclick="setCity(25.3176, 82.9739)">Varanasi</button></li>
+            <li><button onclick="setCity(26.4499, 80.3319)">Kanpur</button></li>
+            <li><button onclick="setCity(26.9124, 75.7873)">Jaipur</button></li>
+            <li><button onclick="setCity(26.2389, 73.0243)">Jodhpur</button></li>
+            <li><button onclick="setCity(31.1048, 77.1667)">Shimla</button></li>
+            <li><button onclick="setCity(21.2333, 81.6333)">Raipur</button></li>
+            <li><button onclick="setCity(32.2222, 76.3194)">Dharamshala</button></li>
+        </ul>
+    </div>
+<div id="map"></div>
+
+<!-- Mapbox JavaScript -->
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js"></script>
+<script>
+    // Mapbox token
+    const mapboxToken = 'pk.eyJ1IjoiZGVuaW5qb3NlIiwiYSI6ImNtMGhvdnBzbTBkZzkya29jZHpldXdxdHkifQ.iQKsU9AgxBwq8_xorHxHvA';  // Replace with your actual Mapbox token
+
+    // Weatherbit API key
+    const weatherbitApiKey = '8ba9fb88bc5d4bb5a067230d3a43b56f';  // Replace with your actual Weatherbit API key
+
+    // Initialize Mapbox map
+    mapboxgl.accessToken = mapboxToken;
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [80.2707, 23.3734],  // Center of India
+        zoom: 5
+    });
+
+    // Function to fetch weather data from Weatherbit API
+    async function fetchWeatherData(lat, lon) {
+        try {
+            const response = await fetch(`https://api.weatherbit.io/v2.0/current?lat=${lat}&lon=${lon}&key=${weatherbitApiKey}`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching weather data:', error);
+            return null;
+        }
+    }
+
+    // Function to display weather data in a popup
+    function displayWeatherPopup(lat, lon) {
+        fetchWeatherData(lat, lon).then(data => {
+            if (data && data.data) {
+                const weather = data.data[0];
+                new mapboxgl.Popup()
+                    .setLngLat([lon, lat])
+                    .setHTML(`<h3>${weather.city_name}</h3><p>Temperature: ${weather.temp}°C<br>Weather: ${weather.weather.description}</p>`)
+                    .addTo(map);
+            } else {
+                console.error('No weather data available for this location.');
+            }
+        });
+    }
+
+    // Add click event listener to the map
+    map.on('click', (e) => {
+        const { lngLat } = e;
+        displayWeatherPopup(lngLat.lat, lngLat.lng);
+    });
+
+    // Function to set city and fetch weather data
+    function setCity(lat, lon) {
+        map.flyTo({ center: [lon, lat], zoom: 10 });
+        displayWeatherPopup(lat, lon);
+    }
+
+    // Handle search input
+    document.getElementById('search').addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const buttons = document.querySelectorAll('.city-list button');
+        buttons.forEach(button => {
+            const city = button.textContent.toLowerCase();
+            if (city.includes(query)) {
+                button.style.display = 'block';
+            } else {
+                button.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

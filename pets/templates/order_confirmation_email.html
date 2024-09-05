@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .order-details {
+            margin: 20px 0;
+        }
+        .order-details h2 {
+            margin-bottom: 10px;
+        }
+        .order-details p {
+            margin: 5px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Order Confirmation</h1>
+        </div>
+        <p>Dear {{ fullname }},</p>
+        <p>Thank you for ordering with PetsIndia.</p>
+        <p><strong>Address:</strong> {{ address }}, {{ city }}, {{ postal_code }}</p>
+        <div class="order-details">
+            <h2>Order Details</h2>
+            {% for item in items %}
+            <p>{{ item.product_name }} (x{{ item.quantity }}) - ${{ item.total_price }}</p>
+            {% endfor %}
+            <p><strong>Total Amount: </strong> ${{ total_amount }}</p>
+        </div>
+        <p>You can track your order by clicking the TRACK ORDER button in your PetsIndia account.</p>
+        <p>Best regards,<br>PetsIndia Team</p>
+        <div class="footer">
+            <p>PetsIndia<br>1234 Your Street, Your City, Your State, 12345</p>
+        </div>
+    </div>
+</body>
+</html>

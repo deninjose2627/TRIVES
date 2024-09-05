@@ -1,0 +1,335 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 250px;
+            background: #4f5461;
+            color: white;
+            position: fixed;
+            height: 100%;
+            padding-top: 20px;
+            transition: width 0.3s;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s, padding-left 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar a i {
+            margin-right: 10px;
+            transition: margin-right 0.3s;
+        }
+
+        .sidebar.collapsed a i {
+            margin-right: 0;
+        }
+
+        .sidebar.collapsed a span {
+            display: none;
+        }
+
+        /* Main content styling */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            width: calc(100% - 250px);
+            transition: margin-left 0.3s, width 0.3s;
+        }
+
+        .sidebar.collapsed + .main-content {
+            margin-left: 70px;
+            width: calc(100% - 70px);
+        }
+
+        /* Header styling */
+        .header {
+            background-color: #7b7a7a;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease forwards;
+        }
+
+        .header h1 {
+            color: white;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* Card styling for sections */
+        .card {
+            background-color: rgb(230, 225, 217);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .card ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .card ul li {
+            margin-bottom: 10px;
+        }
+
+        /* Button styling */
+        .button {
+            background-color: #6e7b90;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .button:hover {
+            background-color: #0f5bbd;
+            transform: scale(1.05);
+        }
+
+        /* Animation for fade-in effect */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border-bottom: 2px solid #948d8d;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #e1a7a7;
+        }
+
+        tr.processing {
+            background-color: #f5e79e; /* Light yellow */
+        }
+
+        tr.out-for-delivery {
+            background-color: #c7ecc7; /* Light green */
+        }
+
+        tr.delivered {
+            background-color: #a3d8ff; /* Light blue */
+        }
+
+        tr.shipped {
+            background-color: #d5a4ff; /* Light purple */
+        }
+
+        tbody tr {
+            animation: fadeIn 2s ease;
+        }
+
+        /* Search form styles */
+        .search-form {
+            margin-bottom: 20px;
+        }
+
+        .search-input, .search-button {
+            padding: 8px;
+            margin: 0 5px;
+        }
+
+        .search-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .main-content {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .card h2 {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar section -->
+    <div class="sidebar">
+        <a href="{% url 'admin_dashboard' %}">
+            <i class="fas fa-home"></i><span>Home</span>
+        </a>
+        <a href="{% url 'adminpage' %}">
+            <i class="fas fa-box"></i><span>Product Management</span>
+        </a>
+        <a href="{% url 'adminorders' %}">
+            <i class="fas fa-shopping-cart"></i><span>Order Management</span>
+        </a>
+        <a href="{% url 'stock_management' %}">
+            <i class="fas fa-warehouse"></i><span>Stock Management</span>
+        </a>
+        <a href="{% url 'manage_suppliers' %}">
+            <i class="fas fa-truck"></i><span>Supplier Management</span>
+        </a>
+        <a href="{% url 'user_logout' %}">
+            <i class="fas fa-sign-out-alt"></i><span>Log out</span>
+        </a>
+    </div>
+
+    <!-- Main content section -->
+    <div class="main-content">
+        
+        <!-- Header section -->
+        <div class="header">
+            <h1>Orders List</h1>
+        </div>
+
+        <!-- Search form for superuser -->
+        {% if request.user.is_superuser %}
+        <div class="search-form">
+            <form method="GET" action="{% url 'order_list' %}">
+                <input type="text" name="id" class="search-input" placeholder="OD24M">
+                <input type="text" name="fullname" class="search-input" placeholder="Search by Full Name">
+                <select name="status" class="search-input">
+                    <option value="" selected disabled hidden>Search by Status</option>
+                    <option value="processing">Processing</option>
+                    <option value="out_for_delivery">Out for Delivery</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                </select>
+                <button type="submit" class="search-button">Search</button>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- Orders Table section -->
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ORDER ID</th>
+                        <th>Full Name</th>
+                        <th>Address</th>
+                        <th>Total Amount</th>
+                        <th>Status</th>
+                        {% if request.user.is_superuser %}
+                        <th>Update Status</th> <!-- New column header for superuser -->
+                        {% endif %}
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders reversed %}
+                    {% if request.user.is_superuser or order.user == request.user %}
+                    <tr class="{{ order.status }} animate__animated animate__fadeInUp">
+                        <td>OD24M{{ order.id }}</td>
+                        <td>{{ order.fullname }}</td>
+                        <td>{{ order.address }}, {{ order.city }}, {{ order.postal_code }}</td>
+                        <td>${{ order.total_amount }}</td>
+                        <td>{{ order.get_status_display }}</td>
+                        {% if request.user.is_superuser %}
+                        <td>
+                            <form action="{% url 'update_status' order.id %}" method="post">
+                                {% csrf_token %}
+                                <select name="status">
+                                    <option value="processing">Processing</option>
+                                    <option value="out_for_delivery">Out for Delivery</option>
+                                    <option value="shipped">Shipped</option>
+                                    <option value="delivered">Delivered</option>
+                                </select>
+                                <button type="submit" class="button">Update</button>
+                            </form>
+                        </td>
+                        {% endif %}
+                        <td><a href="{% url 'order_detail' order.id %}" class="view-details-link">View Details</a></td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <script>
+        // JavaScript to toggle sidebar
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+        sidebar.addEventListener('mouseenter', () => {
+            sidebar.classList.remove('collapsed');
+            mainContent.classList.remove('collapsed');
+        });
+        sidebar.addEventListener('mouseleave', () => {
+            sidebar.classList.add('collapsed');
+            mainContent.classList.add('collapsed');
+        });
+    </script>
+</body>
+</html>

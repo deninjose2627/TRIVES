@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1530595464530-281b49e8a6d7'); /* Replace 'background-image.jpg' with the path to your background image */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            color: rgb(213, 227, 186); /* Adjust text color to be visible on the background */
+            padding: 20px;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            background-color: #e7b1a7;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            max-width: 600px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #ff6347; /* Red color for warning */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add text shadow for emphasis */
+        }
+        p {
+            font-size: 24px;
+            color: #8e2c2c;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add text shadow for emphasis */
+        }
+        .mx-0 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 24px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add box shadow for button */
+        }
+        .mx-0:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Out of Stock</h1>
+        <p>We're sorry, the item you're looking for is currently out of stock.</p>
+        <a href="{% url 'cart' %}" class="mx-0" id="back-to-cart">Back to Cart</a>
+    </div>
+
+    <script>
+        // Add a subtle animation to the button on hover
+        const button = document.getElementById('back-to-cart');
+        button.addEventListener('mouseenter', function() {
+            button.style.transform = 'scale(1.05)';
+        });
+
+        button.addEventListener('mouseleave', function() {
+            button.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html>

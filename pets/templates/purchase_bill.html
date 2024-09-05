@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Most Ordered Product</title>
+    <!-- CSS styles -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        .product-details {
+            margin-top: 50px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Most Ordered Product</h1>
+    <div class="product-details">
+        {% if most_ordered_product %}
+            <h2>{{ most_ordered_product.name }}</h2>
+            <p>Total Ordered Quantity: {{ total_ordered_quantity }}</p>
+        {% else %}
+            <p>No orders yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
