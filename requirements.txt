@@ -218,7 +218,6 @@ python-multipart==0.0.9
 python-vlc==3.0.20123
 pytweening==1.2.0
 pytz==2023.3.post1
-pywin32==306
 pywinpty==2.0.12
 PyYAML==6.0.1
 pyzmq==25.1.1
