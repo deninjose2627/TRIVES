@@ -37,14 +37,6 @@
             border-color: #007bff;
         }
 
-        .form-input::-ms-expand {
-            display: none;
-        }
-
-        .form-input option[disabled]:first-child {
-            color: #999;
-        }
-
         .form-button {
             width: 100%;
             padding: 10px;
@@ -76,10 +68,10 @@
 
         .sidebar {
             width: 300px;
-            position: absolute; /* Changed from relative to absolute */
+            position: absolute;
             top: 0;
             left: 0;
-            height: 100%; /* Adjusted height */
+            height: 100%;
             background-color: #f9f9f9;
             border-right: 1px solid #ccc;
             padding: 20px;
@@ -87,14 +79,9 @@
         }
 
         .main-content {
-            margin-left: 320px; /* Adjusted to align right next to sidebar */
+            margin-left: 320px;
             padding: 20px;
-            position: relative; /* Make sure this is relative to allow adjustment */
-        }
-
-        .banner-section {
             position: relative;
-            z-index: 1;
         }
     </style>
 
@@ -124,14 +111,14 @@
         </div>
     </section>
 
-    <section class="gap products-section" style="background-color: #e2e7e1; position: relative; padding-top: 10px;"> <!-- Removed padding to align to top -->
+    <section class="gap products-section" style="background-color: #e2e7e1; position: relative; padding-top: 10px;">
         <div class="sidebar">
             <div class="form-container">
                 <form id="category-form" method="GET" action="{% url 'ourproducts' %}">
                     <div class="form-field">
-                        <label for="category" class="form-label"><a href="{% url 'ourproducts' %}"><i> Filter using Category:</i></a></label>
+                        <label for="category" class="form-label">Filter using Category:</label>
                         <select id="category" name="category" required class="form-input" onchange="submitForm()">
-                            <option value="" selected><a href="{% url 'ourproducts' %}"><i></i>All Products</i></a></option>
+                            <option value="" selected>All Products</option>
                             <option value="Wet Pet Food">Wet Pet Food</option>
                             <option value="Commercial Raw Pet Food">Commercial Raw Pet Food</option>
                             <option value="Dry Pet Food">Dry Pet Food</option>
