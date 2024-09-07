@@ -26,10 +26,9 @@ SECRET_KEY = 'django-insecure-m)qv8kv(s*hx$uu$px#^6!+ed0$jnm8!q(%9_3)241c$n8u3cm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 AUTH_PASSWORD_VALIDATORS = []
 
-GEMINI_API_KEY = 'AIzaSyDA7tbJ4WXWosl8xD5J0dXoLcIlw8-O1D8'
 
 # Application definition
 
@@ -79,12 +78,14 @@ WSGI_APPLICATION = 'miniproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'miniproject',
+        'USER': 'postgres',
+        'PASSWORD': '6537',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
