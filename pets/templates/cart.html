@@ -1,4 +1,3 @@
-{% extends 'base.html' %}
 {% load static %}
 {% block content %}
 
@@ -11,174 +10,374 @@
     <!-- CSS styles -->
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #e6d4d4;
+            font-family: 'Arial', sans-serif;
+            background-color: #c58484;
+            margin: 0;
+            padding: 0;
+            background-image: url(https://cdn.shopify.com/s/files/1/0070/7032/files/ecommerce_20shopping_20cart.png?v=1689527835);
         }
+
+        header {
+            background-color: #fff; /* White background for the navbar */
+            color: #343a40; /* Dark text color */
+            padding: 20px;
+            border-bottom: 1px solid #e2e2e2; /* Subtle border at the bottom */
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .bottom-bar {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            
+        }
+
+        .navbar img {
+            height: 90px;
+            width: 130px;
+        }
+
+        .navbar-links {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-links li {
+            margin: 0 10px;
+        }
+
+        .navbar-links a {
+            color: #343a40; /* Dark text color */
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .navbar-links a:hover {
+            text-decoration: underline;
+        }
+
+        #search-form {
+            margin-right: 20px;
+        }
+
+        #search-form div {
+            display: flex;
+            align-items: center;
+            background-color: #d5a5a5;
+            padding: 5px;
+            border: 1px solid #482f2f;
+            border-radius: 5px;
+        }
+
+        #search-input {
+            flex-grow: 1;
+            border: none;
+            padding: 5px;
+        }
+
+        #search-icon {
+            fill: #150808;
+        }
+
+        .menu-end {
+            display: flex;
+            align-items: center;
+        }
+
+        .bar-menu {
+            display: none; /* Adjust visibility based on your needs */
+        }
+
+        .line {
+            border-left: 1px solid #343a40; /* Dark line color to match text */
+            height: 24px;
+            margin: 0 10px;
+        }
+
+        .hamburger-icon {
+            margin-right: 20px;
+        }
+
+        .donation {
+            display: flex;
+            align-items: center;
+        }
+
+        .donation a {
+            color: #343a40; /* Dark text color */
+            text-decoration: none;
+        }
+
+        .cart-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .cart-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
         h1 {
-            text-align: center;
+            font-size: 2rem;
             margin-bottom: 20px;
+            color: #333;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
+
         th, td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ccc; /* Add border */
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e2e2e2;
         }
+
         th {
             background-color: #007bff;
             color: #fff;
         }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
+
+        td img {
+            max-width: 120px;
+            height: auto;
+            border-radius: 4px;
         }
+
+        .quantity-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         .quantity-btn, .delete-btn {
-            text-decoration: none;
-            padding: 5px 10px;
-            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
             cursor: pointer;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
         }
-        .quantity-btn {
-            background-color: #28a745;
-            color: #fff;
-            margin-right: 5px;
+
+        .quantity-btn:hover, .delete-btn:hover {
+            background-color: #0056b3;
         }
+
         .delete-btn {
             background-color: #dc3545;
-            color: #fff;
         }
-        img {
-            max-width: 80px;
-            height: auto;
-            display: block;
-            margin: auto;
+
+        .delete-btn:hover {
+            background-color: #c82333;
         }
+
         .total-row {
             font-weight: bold;
+            font-size: 1.2rem;
+            background-color: #f1f1f1;
         }
+
         .checkout-btn-container {
-            text-align: right; /* Align to the right side */
+            text-align: right;
         }
+
         .checkout-btn {
-            padding: 10px 20px;
-            background-color: #007bff;
+            padding: 12px 20px;
+            background-color: #28a745;
             color: #fff;
             border: none;
-            border-radius: 3px;
+            border-radius: 4px;
             cursor: pointer;
+            font-size: 1rem;
             text-decoration: none;
+            transition: background-color 0.3s;
         }
+
         .checkout-btn:hover {
-            background-color: #0056b3; /* Darker color on hover */
+            background-color: #218838;
         }
+
         .empty-cart-message {
             text-align: center;
-            margin-top: 250px;
-            font-size: 25px;
-            color: #737372;
+            margin: 50px 0;
+            font-size: 1.3rem;
+            color: #555;
+        }
+
+        .empty-cart-message a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .empty-cart-message a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar-links {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-top: 10px;
+            }
+
+            .navbar-links li {
+                margin: 5px 0;
+            }
+
+            td img {
+                max-width: 80px;
+            }
         }
     </style>
 </head>
 <body>
-    <section class="banner" style="position: relative; overflow: hidden; height: 900px; background-image:url('{% static 'assets/images/cart.jpg' %}')">
+
+    <header>
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <div class="banner-text">
-                        <h2>Shopping Cart</h2>
-                        <ol class="breadcrumb">
-                        </ol>
+            <div class="bottom-bar">
+                <nav class="navbar">
+                    <a href="{% url 'index' %}">
+                        <img src="{% static 'assets/images/logo.png' %}" alt="logo">
+                    </a>
+                    <ul class="navbar-links">
+                        <li><a href="{% url 'index' %}">HOME</a></li>
+                        <li><a style="padding-left: 40px;" href="{% url 'about' %}">ABOUT</a></li>
+                        <li><a style="padding-left: 40px;" style="padding-left: 25px;" href="{% url 'services' %}">WEATHER DASHBOARD</a></li>
+                        <li><a style="padding-left: 40px;" href="{% url 'ourproducts' %}">OUR PRODUCTS</a></li>
+                        <li class="navbar-dropdown"><a href="{% url 'contact' %}">CONTACT</a></li>
+                    </ul>
+                </nav>
+                <form id="search-form" method="GET" action="{% url 'search' %}">
+                    <div>
+                        <input id="search-input" type="text" name="query" placeholder="Search products...">
+                        <button type="submit">
+                            <svg id="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                            </svg>
+                        </button>
                     </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="banner-img">
-                        <div class="banner-img-1">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.82698 416.603C-19.0352 298.701 18.5108 173.372 107.497 90.7633L110.607 96.5197C24.3117 177.199 -12.311 298.935 15.0502 413.781L9.82698 416.603ZM89.893 565.433C172.674 654.828 298.511 692.463 416.766 663.224L414.077 658.245C298.613 686.363 175.954 649.666 94.9055 562.725L89.893 565.433ZM656.842 259.141C685.039 374.21 648.825 496.492 562.625 577.656L565.413 582.817C654.501 499.935 691.9 374.187 662.536 256.065L656.842 259.141ZM581.945 107.518C499.236 18.8371 373.997 -18.4724 256.228 10.5134L259.436 16.4515C373.888 -10.991 495.248 25.1518 576.04 110.708L581.945 107.518Z" fill="#fa441d"></path>
-                            </svg>
-                            <!-- <img src="{% static 'assets/img/banner-img-1.jpg' %}" alt="banner"> -->
-                        </div>
-                        <div class="banner-img-2">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.82698 416.603C-19.0352 298.701 18.5108 173.372 107.497 90.7633L110.607 96.5197C24.3117 177.199 -12.311 298.935 15.0502 413.781L9.82698 416.603ZM89.893 565.433C172.674 654.828 298.511 692.463 416.766 663.224L414.077 658.245C298.613 686.363 175.954 649.666 94.9055 562.725L89.893 565.433ZM656.842 259.141C685.039 374.21 648.825 496.492 562.625 577.656L565.413 582.817C654.501 499.935 691.9 374.187 662.536 256.065L656.842 259.141ZM581.945 107.518C499.236 18.8371 373.997 -18.4724 256.228 10.5134L259.436 16.4515C373.888 -10.991 495.248 25.1518 576.04 110.708L581.945 107.518Z" fill="#fa441d"></path>
-                            </svg>
-                            <!-- <img src="{% static 'assets/img/banner-img-2.jpg' %}" alt="banner"> -->
+                </form>
+                <div class="menu-end">
+                    <div class="bar-menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
+                    <div class="line"></div>
+                    <a href="{% url 'view_to_wishlist' %}"><i class="fa-regular fa-heart"></i></a>
+                    <div class="hamburger-icon">
+                        <div class="donation">
+                            <a href="{% url 'cart' %}" id="show">
+                                <svg enable-background="new 0 0 512 512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                                    <g>
+                                        <path d="m452 120h-60.946c-7.945-67.478-65.477-120-135.054-120s-127.109 52.522-135.054 120h-60.946c-11.046 0-20 8.954-20 20v352c0 11.046 8.954 20 20 20h392c11.046 0 20-8.954 20-20v-352c0-11.046-8.954-20-20-20zm-196-80c47.484 0 87.019 34.655 94.659 80h-189.318c7.64-45.345 47.175-80 94.659-80zm176 432h-352v-312h40v60c0 11.046 8.954 20 20 20s20-8.954 20-20v-60h192v60c0 11.046 8.954 20 20 20s20-8.954 20-20v-60h40z"/>
+                                    </g>
+                                </svg>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-           </section>
-           <br><br><br>
-  <section style="background-color: rgb(193, 215, 215);">
-    {% if cart_items %}
-    <!-- Display cart items if there are any -->
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total Price</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for key, item in cart_items.items %}
-            <tr>
-                <td><img src="{{ item.image.url }}" alt="{{ item.name }}"></td>
-                <td>{{ item.name }}</td>
-                <td>${{ item.price }}</td>
-                <td>
-                    <ul class="quantity-container">
-                        <li>
+    </header>
+
+    <div class="cart-container">
+        <h1>Your Cart</h1>
+
+        {% if cart_items %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Image</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, item in cart_items.items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td><img src="{{ item.image.url }}" alt="{{ item.name }}"></td>
+                    <td>${{ item.price }}</td>
+                    <td>
+                        <div class="quantity-controls">
                             <form action="{% url 'add_to_cart' item.id %}" method="post">
                                 {% csrf_token %}
                                 <button type="submit" class="quantity-btn">+</button>
                             </form>
-                        </li>
-                        <li>{{ item.quantity }}</li>
-                        <li><a href="{% url 'decrease_quantity' item.id %}"><button class="quantity-btn">-</button></a></li>
-                    </ul>
-                </td>
-                <td>${{ item.total_price }}</td>
-                <td><a href="{% url 'remove_from_cart' item.id %}" class="delete-btn">Delete</a></td>
-            </tr>
-            {% endfor %}
-            <tr class="total-row">
-                <td colspan="4" align="right">Total:</td>
-                <td>${{ total_price }}</td>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="checkout-btn-container">
-        <a href="{% url 'checkout' %}" id="checkout-btn" class="checkout-btn">Check out</a>
+                            <span>{{ item.quantity }}</span>
+                            <a href="{% url 'decrease_quantity' item.id %}">
+                                <button class="quantity-btn">-</button>
+                            </a>
+                        </div>
+                    </td>
+                    <td>₹{{ item.total_price }}</td>
+                    <td>
+                        <a href="{% url 'remove_from_cart' item.id %}">
+                            <button class="delete-btn">Delete</button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr class="total-row">
+                    <td colspan="4" align="right">Total:</td>
+                    <td>₹{{ total_price }}</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="checkout-btn-container">
+            <a href="{% url 'checkout' %}" class="checkout-btn">Proceed to Checkout</a>
+        </div>
+        {% else %}
+        <div class="empty-cart-message">
+            Your cart is empty. <a href="{% url 'ourproducts' %}">Shop now</a>.
+        </div>
+        {% endif %}
     </div>
-    {% else %}
-    <!-- Display a message if the cart is empty -->
-    <div class="empty-cart-message">
-        <p>Your shopping cart is empty.</p>
-    </div>
-    {% endif %}
 
-</section>
-    <!-- JavaScript to disable checkout button if cart is empty -->
     <script>
-        // JavaScript code to disable checkout button if cart is empty
-        document.addEventListener('DOMContentLoaded', function() {
-            var cartItems = "{{ cart_items|length }}"; // Get the number of items in the cart
-            var checkoutBtn = document.getElementById('checkout-btn');
-            if (cartItems == 0) {
-                checkoutBtn.style.pointerEvents = "none"; // Disable button click events
-                checkoutBtn.style.backgroundColor = "#ccc"; // Change button color to indicate disabled state
-            }
+        document.getElementById('search-icon').addEventListener('click', function() {
+            document.getElementById('search-form').submit();
         });
     </script>
+
 </body>
 </html>
-
 {% endblock %}

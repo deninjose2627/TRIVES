@@ -1,4 +1,3 @@
-{% extends 'base.html' %}
 {% load static %}
 {% block content %}
 <!DOCTYPE html>
@@ -11,92 +10,189 @@
     <style>
         /* CSS styles */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #f2f2f2, #e0e0e0);
             margin: 0;
-            padding: 20px;
+            padding: 0;
         }
 
-        .main-heading {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 2em;
-            color: #737372;
-            text-align: center;
-            letter-spacing: 3px;
-            margin-top: 20px;
-            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
-        }
-
-        .products-section {
-            background-color: #e9c3aa;
+        header {
+            background-color: #fff;
+            color: #343a40;
             padding: 20px;
+            border-bottom: 1px solid #e2e2e2;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .container {
-            max-width: 1200px; /* Adjust as needed */
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 0 20px;
         }
 
-        .product-item {
-            margin-bottom: 20px;
-        }
-
-        .product {
-            text-align: center;
-            border: 2px solid #ccc;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-            height: 100%;
+        .bottom-bar {
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .product-img img {
+            align-items: center;
             width: 100%;
-            max-height: 200px;
-            object-fit: cover;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 15px;
         }
 
-        /* .product-details {
-            font-size: 18px;
-            margin-top: 10px;
+        .navbar {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        .navbar img {
+            height: 90px;
+            width: 130px;
+        }
+
+        .navbar-links {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-links li {
+            margin: 0 10px;
+        }
+
+        .navbar-links a {
+            color: #343a40;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .navbar-links a:hover {
+            text-decoration: underline;
+        }
+
+        #search-form {
+            margin-right: 20px;
+        }
+
+        #search-form div {
+            display: flex;
+            align-items: center;
+            background-color: #d5a5a5;
+            padding: 5px;
+            border: 1px solid #482f2f;
+            border-radius: 5px;
+        }
+
+        #search-input {
+            flex-grow: 1;
+            border: none;
+            padding: 5px;
+        }
+
+        #search-icon {
+            fill: #150808;
+        }
+
+        .menu-end {
+            display: flex;
+            align-items: center;
+        }
+
+        .bar-menu {
+            display: none;
+        }
+
+        .line {
+            border-left: 1px solid #343a40;
+            height: 24px;
+            margin: 0 10px;
+        }
+
+        .hamburger-icon {
+            margin-right: 20px;
+        }
+
+        .donation {
+            display: flex;
+            align-items: center;
+        }
+
+        .donation a {
+            color: #343a40;
+            text-decoration: none;
+        }
+
+        .cart-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .wishlist-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f8f8f8, #e0e0e0);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
             font-weight: bold;
         }
 
-        .product-details {
-            font-size: 14px;
-            margin: 10px 0;
-            color: #444;
-        } */
+        .product-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-img img {
+            max-width: 120px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
         .product-details {
+            flex-grow: 1;
+            margin-left: 20px;
             font-size: 16px;
             color: #111212;
-            margin-top: 5px;
-            align-items: left;
             font-weight: bold;
         }
 
         .product-actions {
             display: flex;
-            justify-content: space-between;
-            
+            gap: 10px;
         }
 
         .add-to-cart,
         .remove-from-wishlist {
             background-color: #007bff;
             color: white;
-            padding: 8px 12px;
+            padding: 10px 15px;
             border-radius: 4px;
             border: none;
             cursor: pointer;
             transition: background-color 0.3s;
+            font-size: 14px;
         }
 
         .add-to-cart:hover,
@@ -104,52 +200,116 @@
             background-color: #0056b3;
         }
 
+        .remove-from-wishlist {
+            background-color: #dc3545;
+        }
+
+        .remove-from-wishlist:hover {
+            background-color: #c82333;
+        }
+
         .empty-space {
             text-align: center;
-            margin-top: 100px;
-            font-size: 25px;
-            color: #737372;
+            margin: 50px 0;
+            font-size: 1.3rem;
+            color: #555;
+        }
+
+        .empty-space a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .empty-space a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            .product-img img {
+                max-width: 80px;
+            }
+
+            .product-details {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1 class="main-heading">WISHLIST</h1>
+    <header>
+        <div class="container">
+            <div class="bottom-bar">
+                <nav class="navbar">
+                    <a href="{% url 'index' %}">
+                        <img src="{% static 'assets/images/logo.png' %}" alt="logo">
+                    </a>
+                    <ul class="navbar-links">
+                        <li><a href="{% url 'index' %}">HOME</a></li>
+                        <li><a style="padding-left: 40px;" href="{% url 'about' %}">ABOUT</a></li>
+                        <li><a style="padding-left: 40px;" style="padding-left: 25px;" href="{% url 'services' %}">WEATHER DASHBOARD</a></li>
+                        <li><a style="padding-left: 40px;" href="{% url 'ourproducts' %}">OUR PRODUCTS</a></li>
+                        <li class="navbar-dropdown"><a href="{% url 'contact' %}">CONTACT</a></li>
+                    </ul>
+                </nav>
+                <form id="search-form" method="GET" action="{% url 'search' %}">
+                    <div>
+                        <input id="search-input" type="text" name="query" placeholder="Search products...">
+                        <button type="submit">
+                            <svg id="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+                <div class="menu-end">
+                    <div class="bar-menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
+                    <div class="line"></div>
+                    <a href="{% url 'view_to_wishlist' %}"><i class="fa-regular fa-heart"></i></a>
+                    <div class="line"></div>
+                    <a href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i></a>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    <section class="gap products-section">
+    <section class="wishlist-container">
+        <h1>WISHLIST</h1>
         <div class="container">
             <div class="row">
                 {% if data %}
                     {% for product in data %}
-                        <div class="col-md-3 col-sm-6 product-item">
-                            <div class="product">
-                                <div class="product-img">
-                                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                                </div>
-                                <div class="product-details" style="text-align: left;">
-                                    <a class="title" href="/product/{{ product.id }}">{{ product.name }}</a>
-                                    <p class="description">Category: {{ product.category }}</p>
-                                    <p class="price">Price: {{ product.price }}</p>
-                                </div>
-                                
-                                <div class="product-actions">
-
-                                    <div class="buttons">
-                                        <form action="{% url 'add_to_cart' product.id %}" method="post">
-                                            {% csrf_token %}
-                                            <button type="submit" class="add-to-cart">Add to Cart</button>
-                                        </form>
-                                        <form action="{% url 'remove_to_wishlist' product.id %}" method="post">
-                                            {% csrf_token %}
-                                            <button type="submit" class="remove-from-wishlist">Remove from Wishlist</button>
-                                        </form>
-                                    </div>
-                                </div>
+                        <div class="product-item">
+                            <div class="product-img">
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                            </div>
+                            <div class="product-details">
+                                <a class="title" href="/product/{{ product.id }}">{{ product.name }}</a>
+                                <p class="description">Category: {{ product.category }}</p>
+                                <p class="price">Price: {{ product.price }}</p>
+                            </div>
+                            <div class="product-actions">
+                                <form action="{% url 'add_to_cart' product.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="add-to-cart">Add to Cart</button>
+                                </form>
+                                <form action="{% url 'remove_to_wishlist' product.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="remove-from-wishlist">Remove from Wishlist</button>
+                                </form>
                             </div>
                         </div>
                     {% endfor %}
                 {% else %}
                     <div class="empty-space">
-                        Your wishlist is empty.
+                        Your wishlist is empty. <a href="{% url 'ourproducts' %}">Browse products</a>
                     </div>
                 {% endif %}
             </div>
@@ -157,5 +317,4 @@
     </section>
 </body>
 </html>
-
 {% endblock %}

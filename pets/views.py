@@ -249,7 +249,7 @@ def ourproducts(request):
 from django.urls import reverse
 
 
-
+@login_required(login_url=combined_login)
 def product_list(request): #admin page product view
     products = Product.objects.all()
     return render(request, 'order_list_and_detail.html', {'product': products})
@@ -497,41 +497,36 @@ def remove_from_cart(request, product_id):
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Cart, Product
 
-@login_required(login_url=combined_login)
+@login_required(login_url='combined_login')
 def cart(request):
     upcart_items = Cart.objects.filter(user=request.user)
     
-    
-    # <QuerySet [<Cart: Cart for alvin: Apple VX max>, <Cart: Cart for alvin: Apple VX max>]>
-    cart_items={}
+    cart_items = {}
+    total_price = 0
+
     for item in upcart_items:
-        # print(item.product.name)
-        
         if item.product.name in cart_items:
-            cart_items[item.product.name]['quantity']+=1
-            cart_items[item.product.name]['total_price']+=cart_items[item.product.name]['price']
-            
+            cart_items[item.product.name]['quantity'] += item.quantity
+            cart_items[item.product.name]['total_price'] = cart_items[item.product.name]['price'] * cart_items[item.product.name]['quantity']
         else:
-            cart_items[item.product.name]={
-                'id':item.product.id,
-                'name':item.product.name,
-                'price':item.product.price,
-                'quantity':item.quantity,
-                'price':item.product.price,
-                'total_price':item.product.price,
-                'image':item.product.image
+            cart_items[item.product.name] = {
+                'id': item.product.id,
+                'name': item.product.name,
+                'price': item.product.price,
+                'quantity': item.quantity,
+                'total_price': item.product.price * item.quantity,
+                'image': item.product.image
             }
-            # print(cart_items)
-
-    total_price = sum(item['total_price'] for item in cart_items.values())
-
+        
+        total_price += item.product.price * item.quantity
     
-    context= {
+    context = {
         'cart_items': cart_items,
         'total_price': total_price
-        }
+    }
     
-    return render(request, 'cart.html',context)
+    return render(request, 'cart.html', context)
+
  
 def product_detail(request, product_id):
     product = Product.objects.get(pk=product_id)
@@ -915,6 +910,7 @@ def order_product(request, product_id):
 
 
 from django.db.models import F, Sum
+@login_required(login_url=combined_login)
 
 def purchase_orders(request):
     purchase_orders = PurchaseOrder.objects.all()
@@ -929,6 +925,8 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Product
 
 @csrf_exempt
+@login_required(login_url=combined_login)
+
 def update_product_quantity(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -999,6 +997,7 @@ class CustomPasswordResetView(PasswordResetView):
 
 from .models import Supplier
 from .forms import SupplierFormedit
+@login_required(login_url=combined_login)
 
 def manage_suppliers(request):
     suppliers = Supplier.objects.all()
@@ -1006,6 +1005,7 @@ def manage_suppliers(request):
 
 
 from django.core.mail import send_mail
+@login_required(login_url=combined_login)
 
 def edit_supplier(request, supplier_id):
     supplier = get_object_or_404(Supplier, pk=supplier_id)
@@ -1058,6 +1058,7 @@ def restocked_products(request):
 
 from django.shortcuts import redirect, get_object_or_404
 from .models import Supplier
+@login_required(login_url=combined_login)
 
 def delete_supplier(request, supplier_id):
     supplier = get_object_or_404(Supplier, pk=supplier_id)
@@ -1158,6 +1159,8 @@ def get_weather(location):
     except Exception as e:
         print(f"Error fetching weather data: {e}")
         return None
+    
+@login_required(login_url=combined_login)
 
 def weather_view(request):
     if request.method == "POST":
@@ -1196,6 +1199,7 @@ def weather_view(request):
 # views.py
 
 from django.shortcuts import render
+@login_required(login_url=combined_login)
 
 def weather_map(request):
     # Replace 'your_api_key' with your actual OpenWeatherMap API key
@@ -1208,6 +1212,7 @@ def weather_map(request):
 
 
 # views.py
+
 from django.shortcuts import render
 from django.http import JsonResponse
 import requests
@@ -1215,41 +1220,3 @@ import requests
 def weather_forecast(request):
     return render(request, 'weather_forecast.html')
 
-# your_app/views.py
-# settings.py
-
-
-
-from django.shortcuts import render
-from django.http import JsonResponse
-import requests
-from django.conf import settings
-
-def chatbot_view(request):
-    if request.method == "POST":
-        user_input = request.POST.get('message')
-        response_text = get_gemini_response(user_input)
-        return JsonResponse({"response": response_text})
-    return render(request, 'chatbot.html')
-
-def get_gemini_response(user_input):
-    headers = {
-        'Authorization': f'Bearer {settings.GEMINI_API_KEY}',
-        'Content-Type': 'application/json'
-    }
-    data = {
-        "prompt": user_input,
-        "max_tokens": 150  # Adjust as needed
-    }
-
-    # Use the correct endpoint for the Gemini API
-    response = requests.post('https://api.gemini.com/v1/chatbot/completions', headers=headers, json=data)
-    
-    try:
-        response.raise_for_status()  # Raise an error for bad responses
-        return response.json().get('choices')[0].get('text')
-    except requests.exceptions.HTTPError as http_err:
-        print(f"HTTP error occurred: {http_err}")  # Log the HTTP error
-    except Exception as err:
-        print(f"Other error occurred: {err}")  # Log any other errors
-    return "Sorry, I'm having trouble connecting to the chat service."

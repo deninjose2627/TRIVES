@@ -80,7 +80,5 @@ urlpatterns = [
 
     path('weather-map/', views.weather_map, name='weather_map'),
     path('weather_forecast', views.weather_forecast, name='weather_forecast'),
-    path('chatbot/', views.chatbot_view, name='chatbot'),
-
 
 ]

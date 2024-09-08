@@ -52,18 +52,19 @@
             background-color: #0056b3;
         }
 
-        .video-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
+        .banner {
+            position: relative;
+            overflow: hidden;
+            height: 800px;
+            background-image: url('https://images6.alphacoders.com/327/327247.jpg');
+            background-size: cover; /* Ensure the image covers the entire section */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Prevent repeating of the image */
         }
 
         .banner-text h2 {
-            color: white;
+            color: rgb(24, 13, 13);
+            text-align: center;
         }
 
         .sidebar {
@@ -72,7 +73,7 @@
             top: 0;
             left: 0;
             height: 100%;
-            background-color: #f9f9f9;
+            background-color: #dabfbf;
             border-right: 1px solid #ccc;
             padding: 20px;
             margin-top: 20px;
@@ -85,28 +86,13 @@
         }
     </style>
 
-    <section class="banner" style="position: relative; overflow: hidden; height: 800px;">
-        <video class="video-background" autoplay loop muted>
-            <source src="{% static 'assets/images/vecteezy_hands-watering-young-plants-growing-in-germination-on_4651777.mp4' %}" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+    <section class="banner">
         <div class="container banner-section" style="position: relative; z-index: 1;">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <div class="banner-text">
-                        <h2>Our Products</h2>
-                    </div>
+                    
                 </div>
-                <div class="col-lg-6">
-                    <div class="banner-img">
-                        <div class="banner-img-1">
-                            <img src="{% static 'assets/images/img2.jpg' %}" alt="banner">
-                        </div>
-                        <div class="banner-img-2">
-                            <img src="{% static 'assets/images/farm12.jpeg' %}" alt="banner">
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </section>
@@ -131,8 +117,13 @@
 
         <div class="main-content">
             <div class="row">
+                <div class="banner-text">
+                    <h2>Our Products</h2>
+                </div>
                 {% for product in productdata|dictsort:"id"|dictsortreversed:"is_active" %}
+                <br>
                     <div class="col-md-3 col-sm-6 mb-4">
+                        
                         <div class="healthy-product" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
                             <div class="healthy-product-img">
                                 <a href="/product/{{product.id}}">
@@ -148,8 +139,8 @@
                                     </a>
                                 </div>
                             </div>
-                            <div style="text-align: center;">
-                                <span>{{ product.catogary }}</span>
+                            <div style="text-align: center;padding-bottom:60px;">
+                                <span>{{ product.category }}</span>
                                 <a href="/product/{{product.id}}">{{ product.name }}</a>
                                 <h6>₹{{ product.price }}</h6>
                             </div>
