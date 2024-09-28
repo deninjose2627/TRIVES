@@ -116,7 +116,7 @@
 
 
 
-<section class="gap section-healthy-product" style="background-image: url('assets/img/healthy-product.png'); background-color: #f5f5f5;">
+<section class="gap section-healthy-product" style="background-image: url('assets/img/healthy-product.png'); background-color: #dccaca;">
     <div class="container">
         <div class="heading">
             <!-- <img src="{% static 'assets/images/icon4.png' %}" alt="heading-img"> -->
@@ -156,52 +156,7 @@
             {% endif %}
             {% endfor %}
             <div class="col-lg-9">
-                {% if most_ordered_product %}
-                <div class="deal-of-the-week">
-                    <div class="healthy-product-img" style="background-color: rgb(133, 128, 100);">
-                        <h6>Deal of the Week</h6>
-                        <a href="/product/{{most_ordered_product.id}}">
-                            <img src="{{ most_ordered_product_image }}" style="height: 200px; width: 100%;">
-                        
-                        <ul class="star">
-                            <li><i class="fa-solid fa-star"></i></li>
-                            <li><i class="fa-solid fa-star"></i></li>
-                            <li><i class="fa-solid fa-star"></i></li>
-                            <li><i class="fa-solid fa-star"></i></li>
-                            <li><i class="fa-solid fa-star"></i></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="healthy-product">
-                        
-                        <span>{{ most_ordered_product_category }}</span>
-                        <a href="/product/{{most_ordered_product.id}}">{{ most_ordered_product.name }}</a>
-                        <h6><del>₹70.00</del>₹{{ most_ordered_product_price }}</h6>
-                        <h5>up to 14% off</h5>
-                        <div class="add-to-cart" style="display: flex; justify-content: space-between; align-items: center;">
-                            <form action="{% url 'add_to_cart' most_ordered_product.id %}" method="post">
-            
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-primary">Add to cart</button>
-                            </form>
-                            <a href="{% url 'add_to_wishlist' most_ordered_product.id %}" class="heart-wishlist">
-                                <i class="fa-regular fa-heart"></i>
-                            </a>
-                        </div>
-                        <div id="countdown">
-                            <ul>
-                              <li><span id="days"></span>days</li>
-                              <li><span id="hours"></span>Hour</li>
-                              <li><span id="minutes"></span>Min</li>
-                              <li class="mb-0"><span id="seconds"></span>Sec</li>
-                            </ul>
-                           </div>
-                          
-                    </div>
-                    
-            
-                </div>
-                {% endif %} 
+               
             </div>
             
             
@@ -308,6 +263,102 @@
         <br>
     </div>
 </section>
+<div id="chatbot-container">
+    <button id="chatbot-button" style="position: fixed; bottom: 20px; right: 20px; background-color: #007bff; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 24px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); cursor: pointer; transition: background-color 0.3s;">
+        💬
+    </button>
+
+    <!-- Chatbot Widget (Hidden by Default) -->
+    <div id="chatbot-widget" style="display: none; position: fixed; bottom: 80px; right: 20px; width: 350px; background-color: #fff; border-radius: 10px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); overflow: hidden; font-family: Arial, sans-serif;">
+        <div style="background-color: #007bff; color: white; padding: 12px; font-weight: bold; text-align: center; font-size: 16px; border-top-left-radius: 10px; border-top-right-radius: 10px;">Cropsy Chatbot</div>
+        <div id="chat-box" style="height: 250px; padding: 10px; overflow-y: auto; background-color: #f8f8f8; border-bottom: 1px solid #ddd;">
+            <!-- Messages will be appended here -->
+        </div>
+        <div style="display: flex; padding: 10px; background-color: #fff; border-top: 1px solid #ddd;">
+            <input type="text" id="user-input" placeholder="Type your message..." style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-right: 10px; font-size: 14px; transition: border-color 0.3s;">
+            <button onclick="sendMessage()" style="background-color: #007bff; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; transition: background-color 0.3s, transform 0.2s;">Send</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Additional styles for better aesthetics */
+    #chat-box .message {
+        padding: 8px 12px;
+        border-radius: 5px;
+        margin-bottom: 5px;
+        max-width: 75%;
+        word-wrap: break-word;
+        font-size: 14px;
+    }
+    .user-message {
+        background-color: #007bff;
+        color: white;
+        margin-left: auto; /* Align user messages to the right */
+    }
+    .bot-message {
+        background-color: #e1e1e1;
+        color: black;
+    }
+    #user-input:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+    button:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+        transform: scale(1.05);
+    }
+</style>
+
+<script>
+    // Toggle chatbot visibility
+    document.getElementById('chatbot-button').addEventListener('click', function() {
+        const chatbotWidget = document.getElementById('chatbot-widget');
+        chatbotWidget.style.display = chatbotWidget.style.display === 'none' ? 'block' : 'none';
+    });
+
+    function getCSRFToken() {
+        const cookieValue = document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1];
+        return cookieValue;
+    }
+
+    function appendMessage(message, className) {
+        const chatBox = document.getElementById('chat-box');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message ' + className;
+        messageDiv.textContent = message;
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function sendMessage() {
+        const userInput = document.getElementById('user-input');
+        const message = userInput.value.trim();
+        if (message === '') return;
+
+        appendMessage(message, 'user-message');
+        userInput.value = '';
+
+        fetch('{% url "chat" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': getCSRFToken(),
+            },
+            body: new URLSearchParams({
+                'message': message
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            appendMessage(data.reply, 'bot-message');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
+
 
 
 

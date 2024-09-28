@@ -80,5 +80,9 @@ urlpatterns = [
 
     path('weather-map/', views.weather_map, name='weather_map'),
     path('weather_forecast', views.weather_forecast, name='weather_forecast'),
+    path('chat/', views.chat, name='chat'),
+    path('recommend/', views.recommend_products, name='recommend_products'),
+    path('product_visualizations/', views.product_visualizations, name='product_visualizations'),
+
 
 ]

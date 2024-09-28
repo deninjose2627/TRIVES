@@ -1,5 +1,6 @@
 
 
+from datetime import datetime, timedelta
 import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
@@ -17,7 +18,7 @@ from django.db.models import F
 
 def index(request):
     # Retrieve the first 5 products
-    productdata = Product.objects.all()[:5]
+    productdata = Product.objects.all()[:6]
     
     # Query to get the most ordered product
     most_ordered_product = None
@@ -103,33 +104,6 @@ def adminpage(request):
     return render(request, 'user.html', context)
 
 
-# def admin_login(request):
-#     if request.method == 'POST':
-#         form = AuthenticationForm(request, request.POST)
-#         if form.is_valid():
-#             username = form.cleaned_data['username']
-#             password = form.cleaned_data['password']
-#             user = authenticate(request, username=username, password=password)
-#             if user is not None and user.is_superuser:
-#                 login(request, user)
-#                 url='/adminpage'
-#                 x=f'''
-#                     <script>
-#                         alert("wlecome admin");
-#                         window.location.href = "{url}"; 
-#                     </script>
-#                 '''
-                
-#                 return HttpResponse(x)
-#         else:
-#             form = AuthenticationForm()  
-#             error_message = 'Invalid credentials. Please try again.'
-#             return render(request, 'admin_login.html', {'form': form, 'error_message': error_message})
-    
-#     else:
-#         form = AuthenticationForm()
-
-#     return render(request, 'admin_login.html', {'form': form})
 
 
 from django.shortcuts import render, redirect
@@ -146,8 +120,8 @@ def user_register(request):
             login(request, user)
 
             # Send registration email
-            subject = 'Welcome to PetsINDIA'
-            message = f'Hi {user.username},\n\nThank you for registering on PetsINDIA!\n\nYour username: {user.username}\nYour password: {form.cleaned_data["password1"]}'
+            subject = 'Welcome to Thriveseeds'
+            message = f'Hi {user.username},\n\nThank you for registering on Thriveseeds!\n\nYour username: {user.username}\nYour password: {form.cleaned_data["password1"]}'
             from_email = 'deninjose0@gmail.com'
             to_email = user.email
             send_mail(subject, message, from_email, [to_email])
@@ -357,12 +331,12 @@ def checkout_view(request):
         redirect_url += '?' + '&'.join([f"{key}={value}" for key, value in params.items()])
 
         # Send email confirmation to the logged-in user's email address
-        subject = 'Order Confirmation - PetsIndia'
+        subject = 'Order Confirmation - ThriveSEEDS'
         message = f"Dear {fullname},\n\n"
-        message += f"Thanks for ordering with PetsIndia.\n\n"
+        message += f"Thanks for ordering with ThriveSEEDS.\n\n"
         message += f"For order details, click the following link:\n"
-        message += f"Or Please click TRACK ORDER button in your PetsINDIA account "
-        message += "Best regards,\nPetsIndia Team"
+        message += f"Or Please click TRACK ORDER button in your ThriveSEEDS account "
+        message += "Best regards,\nThriveseeds Team"
 
         sender_email = 'your@email.com'  # Replace with your sender email
         recipient_email = request.user.email  # Use the logged-in user's email address
@@ -705,44 +679,7 @@ def stock_management(request):
     products_at_reorder_level = Product.objects.filter(quantity__lte=F('reorderlevel'))
     return render(request, 'stock_management.html', {'products_at_reorder_level': products_at_reorder_level})
 
-# @login_required
-# def purchase_cart(request, product_id):
-#     upcart_items = Cart.objects.filter(user=request.user)
-    
 
-#     cart_items={}
-#     for item in upcart_items:
-#         # print(item.product.name)
-        
-#         if item.product.name in cart_items:
-#             cart_items[item.product.name]['quantity']+=1
-#             cart_items[item.product.name]['total_price']+=cart_items[item.product.name]['price']
-            
-#         else:
-#             cart_items[item.product.name]={
-#                 'id':item.product.id,
-#                 'name':item.product.name,
-#                 'price':item.product.price,
-#                 'quantity':item.quantity,
-#                 'price':item.product.price,
-#                 'total_price':item.product.price,
-#                 'image':item.product.image
-#             }
-#             # print(cart_items)
-
-#     total_price = sum(item['total_price'] for item in cart_items.values())
-
-    
-#     context= {
-#         'cart_items': cart_items,
-#         'total_price': total_price
-#         }
-    
-#     return render(request, 'purchase_cart.html',context)
-
-
-
-#most ordered product
 
 from django.shortcuts import render
 from .models import OrderItem, Product
@@ -1019,13 +956,13 @@ def edit_supplier(request, supplier_id):
 
             # Sending email to the updated email address
             subject = 'Supplier Information Updated'
-            message = f"Hello,\n\nYour supplier information has been updated. Thank you for using our service.\n\nRegards,\nPetsINDIA.com"
+            message = f"Hello,\n\nYour supplier information has been updated. Thank you for using our service.\n\nRegards,\nThriveseeds.com"
             send_mail(subject, message, 'from@example.com', [new_email])
 
             # If email is updated, also send email to the old email address
             if old_email != new_email:
                 subject = 'Email Address Change Notification'
-                message_old = f"Hello,\n\nYour email address has been changed from {old_email} to {new_email}. If you did not request this change, please contact us immediately.\n\nRegards,\nPetsINDIA.COM"
+                message_old = f"Hello,\n\nYour email address has been changed from {old_email} to {new_email}. If you did not request this change, please contact us immediately.\n\nRegards,\nThriveseeds.COM"
                 send_mail(subject, message_old, 'from@example.com', [old_email])
 
             return redirect('manage_suppliers')
@@ -1203,7 +1140,7 @@ from django.shortcuts import render
 
 def weather_map(request):
     # Replace 'your_api_key' with your actual OpenWeatherMap API key
-    api_key = '8ba9fb88bc5d4bb5a067230d3a43b56f'
+    api_key = '8fcb95aa406943989846fd4511f34d38'
     
     # Pass the API key to the template context
     context = {'api_key': api_key}
@@ -1220,3 +1157,297 @@ import requests
 def weather_forecast(request):
     return render(request, 'weather_forecast.html')
 
+import requests
+from django.http import JsonResponse
+from django.shortcuts import render
+
+# Replace with your API key
+API_KEY = 'AIzaSyDWn7FhpBcLeXw4ygXZd-86c-es1LJiWBA'
+API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent'
+
+# Define predefined responses
+PREDEFINED_RESPONSES = {
+    "Can you tell me what this THRIVEseeds is about?": "Hi, I’m Cropsy! Our e-commerce website THRIVEseeds specializes in selling high-quality crop seeds for various agricultural needs. We offer a wide range of seeds with detailed descriptions, pricing, and weather-based recommendations.",
+    "What kinds of crop seeds do you sell?": "Cropsy here! We offer a diverse range of crop seeds including vegetables, fruits, grains, and pulses. You can browse our categories to find specific types of seeds.",
+    "Can you give me details about a specific seed?": "Sure thing! Just tell me the name or category of the seed you’re interested in, and I’ll provide you with more details.",
+    "How does weather affect the seeds I should buy?": "Great question! Weather plays a crucial role in crop growth. I can help you choose the right seeds based on your local climate conditions using our weather forecasts.",
+    "Can you recommend seeds based on the current weather?": "Absolutely! Based on your location and the current weather conditions, I can suggest the best seeds for optimal growth. Just let me know your location.",
+    "How do I add items to my cart?": "To add items to your cart, simply select the desired seed, choose the quantity, and click the 'Add to Cart' button.",
+    "I want to remove an item from my cart. How do I do that?": "No problem! Go to your cart page, find the item you want to remove, and click the 'Remove' button next to it.",
+    "How do I check out?": "To check out, go to your cart, review the items, and click the 'Proceed to Checkout' button. Follow the prompts to enter your shipping information and payment details.",
+    "I have a problem with my order. Who should I contact?": "If you have any issues with your order, please contact our customer support team through the contact form on our website or by email at deninjose0@gmail.com.",
+    "How can I track my order?": "You can track your order by visiting the 'Order Tracking' section on our website and entering your order number.",
+    "How do I create an account?": "To create an account, click on the 'Sign Up' button on the homepage, fill out the required information, and submit the form. You’ll receive a confirmation email to complete the registration.",
+    "How can I reset my password?": "If you’ve forgotten your password, go to the 'Login' page and click on 'Forgot Password.' Follow the instructions to reset your password.",
+    "What weather conditions should I consider when buying seeds?": "When purchasing seeds, you should consider factors like temperature, humidity, rainfall, and soil conditions. I can provide you with weather forecasts to help you make the right decision.",
+    "Can you give me today’s weather forecast?": "Sure! Let me check the current weather conditions for your location. Could you share your city or town?",
+    "What is the weather forecast for the next 7 days?": "I can provide you with a 7-day weather forecast for your area. Please visit \"weather dashboard\" after login for get weather forecasting data up to 16 days from now.",
+    "How does the weather forecasting feature work?": "THRIVEseeds integrates weather data from reliable sources to help you make informed decisions. The forecasts are updated regularly, and I can provide real-time information for your specific area.",
+    "What are the available payment options?": "We accept major credit cards, debit cards, UPI, and net banking. You can choose your preferred option during checkout.",
+    "How can I contact customer support?": "You can contact our customer support through the contact form on our website or by emailing us at deninjose0@gmail.com.",
+    "What’s your favorite color?": "As much as I’d love to have a favorite color, I’m here to help you with crop seed-related queries! Let me know if you need assistance with any products or weather updates.",
+    "Tell me a joke.": "I’m more of a seed and weather expert, but I can certainly help you grow some great crops! Let me know if you need assistance with anything else.",
+    "How do I fix my car engine?": "I specialize in crop seeds and weather forecasting, so I might not be able to help with that. However, if you have any questions about our products, I’d be happy to assist!",
+    "Can you predict the stock market for me?": "I’m here to provide you with weather forecasts and help with crop seed-related queries. If you’re looking for investment advice, I recommend contacting a financial expert.",
+    "How can I grow flowers in space?": "That’s an exciting question! While I can help you grow crops on Earth, space gardening is a bit out of my expertise. Let me know if you need any tips on planting crops here on Earth.",
+    "Can you recommend seeds based on the current weather?": "Absolutely! To recommend the best seeds for your area, I need to know your location. Please tell me your city or town.",
+    "how are you": "I'm just a chatbot here to assist you with crop seed-related questions. How can I help you today?",
+}
+
+
+
+def chat(request):
+    if request.method == 'POST':
+        user_message = request.POST.get('message')
+
+        # Retrieve or initialize conversation history
+        conversation_history = request.session.get('conversation_history', [])
+
+        # Add user message to conversation history
+        conversation_history.append(f"input: {user_message}")
+
+        # Check if the message matches any predefined response
+        bot_reply = PREDEFINED_RESPONSES.get(user_message, None)
+        
+        if not bot_reply:
+            # Define headers and data for the API request
+            headers = {
+                'Content-Type': 'application/json',
+            }
+            
+            # Prepare context: Use the conversation history
+            messages = [{'text': message} for message in conversation_history]
+            
+            # Prepare data with context (previous conversation)
+            data = {
+                'contents': [
+                    {
+                        'parts': messages
+                    }
+                ]
+            }
+
+            # Make the API request
+            try:
+                response = requests.post(f'{API_URL}?key={API_KEY}', headers=headers, json=data)
+                response.raise_for_status()  # Raise an exception for HTTP errors
+                
+                # Parse the JSON response
+                api_response = response.json()
+                print("API Response:", api_response)  # For debugging
+                
+                # Extract the bot reply from the response
+                bot_reply = api_response['candidates'][0]['content']['parts'][0]['text']
+                
+                # Limit the response to a certain number of sentences (e.g., 3)
+                bot_reply = '. '.join(bot_reply.split('. ')[:3])  # Limits the response to 3 sentences
+                
+            except requests.RequestException as e:
+                # Handle request errors
+                print(f"API request error: {e}")
+                bot_reply = 'Sorry, there was an error processing your request.'
+
+        # Add bot response to conversation history
+        conversation_history.append(f"output: {bot_reply}")
+
+        # Store updated conversation history in session
+        request.session['conversation_history'] = conversation_history
+
+        return JsonResponse({'reply': bot_reply})
+
+    # Render the chat interface if not a POST request
+    return render(request, 'base.html')
+
+
+import json
+import traceback
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from .models import Product
+
+# Replace with your OpenWeatherMap API key
+OPENWEATHER_API_KEY = '8ba9fb88bc5d4bb5a067230d3a43b56f'
+
+def fetch_weather_data(lat, lon):
+    """Fetch weather data for the last 5 days using OpenWeather One Call API."""
+    import requests
+    from datetime import datetime, timedelta
+
+    url = "https://api.openweathermap.org/data/2.5/onecall/timemachine"
+    weather_conditions = []
+
+    try:
+        for i in range(1, 6):
+            params = {
+                'lat': lat,
+                'lon': lon,
+                'dt': int((datetime.now() - timedelta(days=i)).timestamp()),
+                'appid': OPENWEATHER_API_KEY
+            }
+            response = requests.get(url, params=params)
+            response.raise_for_status()  # Raises an exception for HTTP errors
+            data = response.json()
+            weather_conditions.append(data['current']['weather'][0]['main'])
+        
+        return weather_conditions
+
+    except requests.RequestException as e:
+        print(f"Error fetching weather data: {e}")
+        return []
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return []
+
+def analyze_weather_conditions(conditions):
+    """Analyze the past 5 days of weather conditions to recommend crops."""
+    # Simplified logic for demonstration purposes
+    condition_counts = {condition: conditions.count(condition) for condition in set(conditions)}
+    most_common_condition = max(condition_counts, key=condition_counts.get, default='Normal')
+    return most_common_condition
+
+@csrf_exempt
+def recommend_products(request):
+    """Recommend products based on the last 5 days of weather conditions."""
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            latitude = data.get('latitude')
+            longitude = data.get('longitude')
+
+            if latitude and longitude:
+                # Fetch weather data for the last 5 days
+                weather_conditions = fetch_weather_data(latitude, longitude)
+
+                # Analyze the weather conditions
+                analyzed_condition = analyze_weather_conditions(weather_conditions)
+
+                # Recommend products based on the analyzed weather condition
+                recommended_products = Product.objects.filter(weather_condition=analyzed_condition, is_active=True)
+                
+                if recommended_products.exists():
+                    products_list = ''.join([f'<li>{product.name} - {product.price}</li>' for product in recommended_products])
+                    message = f'<h3>We recommend the following products based on recent weather:</h3><ul>{products_list}</ul>'
+                else:
+                    message = '<h3>No recommendations available for the current weather conditions.</h3>'
+                
+                return JsonResponse({'message': message})
+            else:
+                return JsonResponse({'error': 'Latitude or longitude is missing'}, status=400)
+
+        except Exception as e:
+            # Log the exception with a full traceback
+            print("Internal Server Error: ", str(e))
+            traceback.print_exc()
+            return JsonResponse({'error': 'An internal server error occurred: {}'.format(str(e))}, status=500)
+
+    # For GET request, return a default HTML page
+    return render(request, 'recommendation.html')
+
+
+from django.shortcuts import render
+from .models import Product
+from collections import Counter, defaultdict
+import matplotlib.pyplot as plt
+import io
+import base64
+
+def product_visualizations(request):
+    # Fetch all products
+    orders = Order.objects.all()
+
+    products = Product.objects.all()
+
+    # --- First Visualization: Products per Category ---
+    categories = [product.category for product in products]
+    category_counts = Counter(categories)
+
+    # Data for the first chart
+    category_labels = list(category_counts.keys())
+    category_values = list(category_counts.values())
+
+    # Create the first bar chart
+    plt.figure(figsize=(6, 4))
+    plt.bar(category_labels, category_values, color='skyblue')
+    plt.xlabel('Category')
+    plt.ylabel('Number of Products')
+    plt.title('Products per Category')
+
+    # Convert first chart to PNG
+    fig1 = io.BytesIO()
+    plt.savefig(fig1, format='png')
+    fig1.seek(0)
+    plot_url_1 = base64.b64encode(fig1.getvalue()).decode('utf8')
+
+    # --- Second Visualization: Products per Category and Weather Condition ---
+    category_weather_counts = defaultdict(lambda: defaultdict(int))
+    for product in products:
+        category_weather_counts[product.category][product.weather_condition] += 1
+
+    # Prepare data for second chart
+    weather_conditions = ['Rainy', 'Hot', 'Snowy', 'Humid', 'Normal']
+    categories = list(category_weather_counts.keys())
+    data = {condition: [category_weather_counts[category].get(condition, 0) for category in categories] for condition in weather_conditions}
+
+    # Plot stacked bar chart for category vs weather condition
+    plt.figure(figsize=(10, 6))
+    bottom = [0] * len(categories)
+
+    for condition in weather_conditions:
+        plt.bar(categories, data[condition], bottom=bottom, label=condition)
+        bottom = [sum(x) for x in zip(bottom, data[condition])]
+
+    plt.xlabel('Category')
+    plt.ylabel('Number of Products')
+    plt.title('Products per Category and Weather Condition')
+    plt.legend(title='Weather Condition')
+    plt.xticks(rotation=45)
+
+    # Convert second chart to PNG
+    fig2 = io.BytesIO()
+    plt.savefig(fig2, format='png')
+    fig2.seek(0)
+    plot_url_2 = base64.b64encode(fig2.getvalue()).decode('utf8')
+
+    order_statuses = [order.status for order in orders]
+    status_counts = Counter(order_statuses)
+    status_labels = list(status_counts.keys())
+    status_values = list(status_counts.values())
+
+    plt.figure(figsize=(6, 4))
+    plt.pie(status_values, labels=status_labels, autopct='%1.1f%%', startangle=90)
+    plt.title('Order Status Distribution')
+    plt.axis('equal')
+
+    fig3 = io.BytesIO()
+    plt.savefig(fig3, format='png')
+    fig3.seek(0)
+    plot_url_3 = base64.b64encode(fig3.getvalue()).decode('utf8')
+    plt.close()
+
+    # --- Fourth Visualization: Orders Per City ---
+    order_cities = [order.city for order in orders]
+    city_counts = Counter(order_cities)
+    city_labels = list(city_counts.keys())
+    city_values = list(city_counts.values())
+
+    plt.figure(figsize=(6, 4))
+    plt.bar(city_labels, city_values, color='lightcoral')
+    plt.xlabel('City')
+    plt.ylabel('Number of Orders')
+    plt.title('Orders Per City')
+    plt.xticks(rotation=45)
+
+    fig4 = io.BytesIO()
+    plt.savefig(fig4, format='png')
+    fig4.seek(0)
+    plot_url_4 = base64.b64encode(fig4.getvalue()).decode('utf8')
+    plt.close()
+
+    # Pass all plots to the template
+    return render(request, 'product_visualizations.html', {
+        'plot_url_1': plot_url_1,
+        'plot_url_2': plot_url_2,
+        'plot_url_3': plot_url_3,
+        'plot_url_4': plot_url_4
+    })

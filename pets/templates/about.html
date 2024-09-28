@@ -2,7 +2,15 @@
 {% load static %}
 {% block content %}
 
-<section class="banner" style="position: relative; overflow: hidden; height: 600px; background-image:url('https://static.vecteezy.com/system/resources/thumbnails/018/991/999/original/water-drops-in-stormy-weather-motion-seamless-4k-ultra-hd-animated-circle-abstract-background-free-video.jpg')">
+<section class="banner" style="
+    overflow: hidden;
+    height: 70vh;  /* Fullscreen height */
+    width: 100vw;   /* Fullscreen width */
+    background-image: url('https://t4.ftcdn.net/jpg/08/87/96/41/360_F_887964134_WE6KHON3gDFN70BvUEW1tjs3dWqBVOi7.jpg');
+    background-size: cover;        /* Ensures the image covers the screen */
+    background-position: center;   /* Center the image */
+    background-repeat: no-repeat;  /* Prevent the image from repeating */
+    position: relative;">    
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6">
@@ -68,8 +76,8 @@
         <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="service-item"style="text-align: center;">
-                    <i><img src="{% static 'assets/images/61Cm-Uh6FPL.jpg' %}" alt="icon"></i>
-                    <h4>Quality Farming Tools</h4>
+                    <i><img src="{% static 'assets/images/tomato-seeds-1.jpg' %}" alt="icon"></i>
+                    <h4>Quality  crop seeds</h4>
                     <p>We provide a wide selection of tools for all farming activities, ensuring you have the right equipment for every task.</p>
                 </div>
             </div>
