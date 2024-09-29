@@ -187,29 +187,50 @@
 </head>
 <body>
     <!-- Sidebar section -->
-    <div class="sidebar">
-        <a href="{% url 'admin_dashboard' %}">
-            <i class="fas fa-home"></i><span>Home</span>
-        </a>
-        <a href="{% url 'adminpage' %}">
-            <i class="fas fa-box"></i><span>Product Management</span>
-        </a>
-        <a href="{% url 'product_visualizations' %}">
-            <i class="fas fa-chart-bar"></i><span>Visualizations</span>
-        </a>
-        <a href="{% url 'adminorders' %}">
-            <i class="fas fa-shopping-cart"></i><span>Order Management</span>
-        </a>
-        <a href="{% url 'stock_management' %}">
-            <i class="fas fa-warehouse"></i><span>Stock Management</span>
-        </a>
-        <a href="{% url 'manage_suppliers' %}">
-            <i class="fas fa-truck"></i><span>Supplier Management</span>
-        </a>
-        <a href="{% url 'user_logout' %}">
-            <i class="fas fa-sign-out-alt"></i><span>Log out</span>
-        </a>
-    </div>
+    <!-- Sidebar Section -->
+<div class="sidebar">
+    <!-- Dashboard & Overview Section -->
+    <a href="{% url 'admin_dashboard' %}">
+        <i class="fas fa-home"></i><span>Home</span>
+    </a>
+    <a href="{% url 'product_visualizations' %}">
+        <i class="fas fa-chart-bar"></i><span>Visualizations</span>
+    </a>
+    <a href="{% url 'monthly_sales' %}">
+        <i class="fas fa-file-alt"></i><span>Report</span>
+    </a>
+    
+    <!-- Divider (optional for better visual separation) -->
+    <hr style="border: 0; height: 1px; background-color: rgba(255,255,255,0.2);">
+
+    <!-- Product & Stock Management Section -->
+    <a href="{% url 'adminpage' %}">
+        <i class="fas fa-box"></i><span>Product Management</span>
+    </a>
+    <a href="{% url 'stock_management' %}">
+        <i class="fas fa-warehouse"></i><span>Stock Management</span>
+    </a>
+
+    <!-- Divider (optional for better visual separation) -->
+    <hr style="border: 0; height: 1px; background-color: rgba(255,255,255,0.2);">
+
+    <!-- Order & Supplier Management Section -->
+    <a href="{% url 'adminorders' %}">
+        <i class="fas fa-shopping-cart"></i><span>Order Management</span>
+    </a>
+    <a href="{% url 'manage_suppliers' %}">
+        <i class="fas fa-truck"></i><span>Supplier Management</span>
+    </a>
+
+    <!-- Divider (optional for better visual separation) -->
+    <hr style="border: 0; height: 1px; background-color: rgba(255,255,255,0.2);">
+
+    <!-- Logout Section -->
+    <a href="{% url 'user_logout' %}">
+        <i class="fas fa-sign-out-alt"></i><span>Log out</span>
+    </a>
+</div>
+
     
 
     <!-- Main Content Section -->

@@ -84,5 +84,6 @@ urlpatterns = [
     path('recommend/', views.recommend_products, name='recommend_products'),
     path('product_visualizations/', views.product_visualizations, name='product_visualizations'),
 
+    path('monthly_sales/',views.monthly_sales_report,name='monthly_sales'),
 
 ]

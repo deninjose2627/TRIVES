@@ -1451,3 +1451,74 @@ def product_visualizations(request):
         'plot_url_3': plot_url_3,
         'plot_url_4': plot_url_4
     })
+
+
+from django.shortcuts import render
+from django.db.models import Sum, F
+from datetime import datetime
+from .models import OrderItem
+import openpyxl
+from openpyxl.utils import get_column_letter
+from django.http import HttpResponse
+
+def monthly_sales_report(request):
+    # Get the month from the query parameters, default to the current month and year
+    month = request.GET.get('month', datetime.now().strftime('%Y-%m'))
+    
+    # Split the month and year for query
+    year, month = map(int, month.split('-'))
+
+    # Calculate the start and end dates for the selected month
+    start_date = datetime(year, month, 1)
+    if month < 12:
+        end_date = datetime(year, month + 1, 1)
+    else:
+        end_date = datetime(year + 1, 1, 1)
+
+    # Filter orders within the selected month
+    orders = Order.objects.filter(created_at__range=[start_date, end_date])
+    
+    # Calculate total sales for the month
+    total_sales = orders.aggregate(total=Sum('total_amount'))['total'] or 0
+
+    # Calculate sales per product for the month
+    order_items = OrderItem.objects.filter(order__in=orders)
+    product_sales = order_items.values('product__name').annotate(
+        total_quantity=Sum('quantity'),
+        total_amount=Sum(F('quantity') * F('product__price'))
+    ).order_by('-total_amount')
+
+    if 'export' in request.GET:
+        # Create an Excel workbook and worksheet
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = f"Sales Report {month}-{year}".replace("/", "-")
+
+        # Write the headers
+        headers = ['Product', 'Quantity Sold', 'Total Sales Amount']
+        for col_num, header in enumerate(headers, 1):
+            ws[f"{get_column_letter(col_num)}1"] = header
+
+        # Write data to the Excel sheet
+        for row_num, item in enumerate(product_sales, 2):
+            ws[f"A{row_num}"] = item['product__name']
+            ws[f"B{row_num}"] = item['total_quantity']
+            ws[f"C{row_num}"] = item['total_amount']
+
+        # Add a row for total sales
+        ws[f"A{row_num + 1}"] = 'Total Sales'
+        ws[f"C{row_num + 1}"] = total_sales
+
+        # Prepare the response to download the Excel file
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = f'attachment; filename=Sales_Report_{month}_{year}.xlsx'
+        wb.save(response)
+        return response
+
+    context = {
+        'total_sales': total_sales,
+        'month': f"{year}-{month:02d}",
+        'product_sales': product_sales,
+    }
+    return render(request, 'monthly_sales.html', context)
+

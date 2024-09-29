@@ -10,17 +10,31 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: transparent;
-            margin: 0;
-            padding: 0;
-            display: grid;
-            grid-template-areas: "sidebar content";
-            grid-template-columns: 250px 1fr;
-            height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
+    font-family: Arial, sans-serif;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-areas: "sidebar content";
+    grid-template-columns: 250px 1fr;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background image container */
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(https://wallpaper-house.com/data/out/21/wallpaper2you_3082.jpg);
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px);
+    z-index: -1; /* Ensure the background stays behind content */
+}
         .video-background {
             position: fixed;
             top: 0;
@@ -63,9 +77,10 @@
             max-width: 1000px;
             margin: auto;
             padding: 20px;
-            background-color: rgba(255, 255, 255, 0.6);
+            background-color: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+
         }
         header {
             text-align: center;
@@ -99,6 +114,7 @@
         canvas {
             width: 100%;
             max-width: 600px;
+            
         }
         .weather-data {
             margin-top: 20px;
@@ -127,10 +143,7 @@
     </style>
 </head>
 <body>
-    <video class="video-background" autoplay muted loop>
-        <source src="{% static 'assets/images/vecteezy_sunset-landscape-as-timelapse_23222030.mp4' %}" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+    <div class="background"></div>
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -140,6 +153,11 @@
         <form action="{% url 'weather_forecast' %}" method="get">
             <button type="submit">Weather Forecast</button>
         </form>
+        <a href="https://weatherforcasting-2ibx9snw5jtxq3znwj2nka.streamlit.app/" target="_blank" 
+                        style="padding: 10px; background-color: #FFDEAD; border: none; cursor: pointer; font-size: 18px; 
+                        text-align: center; display: inline-block; width: 90%; text-decoration: none; color: black; margin-bottom: 15px;">
+                        Weather Prediction
+                    </a>
         <form action="{% url 'weather_dashboard' %}" method="get">
             <button type="submit">Visualization</button>
         </form>
@@ -155,6 +173,7 @@
     <div class="content">
         <div class="dashboard">
             <header>Historical Weather Data</header>
+            <br><br>
 
             <div class="input-container">
                 <input type="text" id="city-input" placeholder="Enter city" value="Idukki">
@@ -179,6 +198,7 @@
 
             <div class="weather-data">
                 <h3>Historical Weather Data</h3>
+                
                 <table id="weather-table">
                     <thead>
                         <tr>

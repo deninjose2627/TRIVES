@@ -6,6 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
     <style>
+        .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(https://wallpaper-house.com/data/out/21/wallpaper2you_3082.jpg);
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px);
+    z-index: -1; /* Ensure the background stays behind content */
+}
         /* Ensure the video covers the entire background */
         .video-background {
             position: absolute;
@@ -31,10 +43,8 @@
 </head>
 <body>
     <!-- Video Background -->
-    <video class="video-background" autoplay muted loop>
-        <source src="{% static 'assets/images/vecteezy_sunset-landscape-as-timelapse_23222030.mp4' %}" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+    <div class="background" style="background-image: url(https://wallpaper-house.com/data/out/21/wallpaper2you_3082.jpg)";></div>
+
 
     <div id="container" style="display: grid; grid-template-areas: 
         'header header' 
@@ -58,7 +68,11 @@
         
         <!-- Sidebar -->
         <div style="grid-area: sidebar; background-color: #6e5f42; padding: 20px; display: flex; flex-direction: column;">
-                    
+            <a href="https://weatherforcasting-2ibx9snw5jtxq3znwj2nka.streamlit.app/" target="_blank" 
+            style="padding: 10px; background-color: #FFDEAD; border: none; cursor: pointer; font-size: 18px; 
+            text-align: center; display: inline-block; width: 90%; text-decoration: none; color: black; margin-bottom: 15px;">
+            Weather Prediction
+        </a>  
             <form action="{% url 'weather_forecast' %}" method="get" style="margin-bottom: 15px;">
                 <button type="submit" style="padding: 10px; background-color: #FFDEAD; border: none; cursor: pointer; font-size: 16px; text-align: center; display: inline-block; width: 100%;">
                     Weather Forecast

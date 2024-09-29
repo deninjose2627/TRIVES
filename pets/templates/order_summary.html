@@ -19,21 +19,19 @@
     }
 
     body {
-      background: url('https://png.pngtree.com/background/20210716/original/pngtree-cute-pet-party-picture-image_1362789.jpg') no-repeat center center fixed;
+      background: url('https://encrypted-tbn0.gstatic.com/mages?:ANd9GcRdibeMZdfZoz3hMp3-0Y5QsPk-mPHgtLB_hg&s') no-repeat center center fixed;
       background-size: cover;
       font-family: 'Comic Sans MS', cursive, sans-serif;
     }
 
     .invoice-box {
-
       max-width: 800px;
       margin: auto;
       padding: 30px;
       border: 1px solid #eee;
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0, 0, 0, .1);
-      background: url("{% static 'images/background.jpg' %}") no-repeat center center fixed;
-      background: rgba(255, 255, 255, 0.9); /* Adding a white background with transparency */
+      background: rgba(221, 202, 202, 0.9); /* Adding a white background with transparency */
     }
 
     .invoice-box h5 {
@@ -85,12 +83,7 @@
     }
 
     @media only screen and (max-width: 600px) {
-      .invoice-box table tr.top table td {
-        width: 100%;
-        display: block;
-        text-align: center;
-      }
-
+      .invoice-box table tr.top table td,
       .invoice-box table tr.information table td {
         width: 100%;
         display: block;
@@ -155,7 +148,7 @@
 
 <body>
   <div class="invoice-box">
-    <img src="{% static 'assets/img/petsindia.jpg' %}" class="invoice-logo" alt="PetsINDIA Logo">
+    <img src="{% static 'assets/images/logo-removebg-preview.png' %}" class="invoice-logo" alt="THRIVEseeds Logo">
     <h3 class="invoice-title">Thank You for Your Purchase!</h3>
     <table cellpadding="0" cellspacing="0">
       <tr class="top">
@@ -163,10 +156,10 @@
           <table>
             <tr>
               <td class="title">
-                <h5>PetsINDIA - India's Premium Pet Product Marketplace</h5>
+                <h5>THRIVEseeds - India's Premium Crop Seeds Marketplace</h5>
               </td>
               <td>
-                Order Date: 20/05/2024<br>
+                Order Date: 01/10/2024<br>
               </td>
             </tr>
           </table>
@@ -222,4 +215,5 @@
     <a href="{% url 'index' %}" class="continue-button">Continue Shopping</a>
   </div>
 </body>
+
 </html>
